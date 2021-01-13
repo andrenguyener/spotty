@@ -1,0 +1,242 @@
+{
+    "rulesDirectory": ["node_modules/tslint-microsoft-contrib"],
+    "extends": [
+        // https://github.com/palantir/tslint/blob/master/src/configs/recommended.ts
+        // https://github.com/palantir/tslint/blob/master/src/configs/latest.ts
+        "tslint:latest",
+
+        // https://github.com/palantir/tslint-react
+        "tslint-react",
+
+        // https://github.com/alexjoverm/tslint-config-prettier
+        "tslint-config-prettier" // Keep this line at the end
+    ],
+    "linterOptions": {
+        "exclude": ["*.spec.ts"]
+    },
+    "rules": {
+        /**
+         * Project Specific
+         */
+        "ordered-imports": [true],
+        "no-submodule-imports": false,
+
+        "no-empty-interface": true,
+
+        // Interface name should not start with "I"
+        "interface-name": [false, "never-prefix"],
+
+        // When you temporarily add console for debugging. Use console.debug() or
+        // console.assert() and make sure to remove them before check in
+        "no-console": [true, "log"],
+
+        // Since we are using ES6 (TypeScript), we should not use var for variable declaration
+        "no-var-keyword": true,
+
+        "object-literal-sort-keys": false,
+
+        // The project decided to require semicolon on each sentences
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
+
+        // banned: any, Number, number, String, string, Boolean, boolean, Undefined, undefined
+        "variable-name": [true, "ban-keywords"],
+
+        "no-implicit-dependencies": [false],
+        //
+        // Some useful rules from microsoft-recommended-rule-set:
+        //  ref: https://github.com/Microsoft/tslint-microsoft-contrib/blob/master/recommended_ruleset.js
+        //
+
+        /**
+         * Security Rules. The following rules should be turned on because they find security issues
+         * or are recommended in the Microsoft Secure Development Lifecycle (SDL)
+         */
+
+        // Bans all uses of Math.random and crypto.pseudoRandomBytes.
+        // Better alternatives are crypto.randomBytes and window.crypto.getRandomValues.
+        "insecure-random": true,
+
+        // Do not use banned terms: caller, callee, eval, arguments.
+        "no-banned-terms": true,
+
+        // "no-cookies": true,
+        "no-delete-expression": true,
+
+        // Use of setInnerHTMLUnsafe / execUnsafeLocalFunction leads to XSS
+        "no-disable-auto-sanitization": true,
+
+        // Do not write to document.domain
+        "no-document-domain": true,
+
+        // Do not write to document.wrote.
+        "no-document-write": true,
+
+        // eval() is dangerous as it allows arbitrary code execution with full privileges
+        "no-eval": true,
+
+        // Do not use the execScript functions
+        "no-exec-script": true,
+
+        // Do not use the version of the Function constructor that accepts a string argument
+        "no-function-constructor-with-string-args": true,
+
+        // "no-http-string": [true, "http://www.example.com/?.*", "http://www.examples.com/?.*"],
+        "no-inner-html": true,
+
+        // Because the leading zero which identifies an octal literal has been a source of confusion
+        // and error in JavaScript code, ECMAScript 5 deprecates the use of octal numeric literals.
+        "no-octal-literal": true,
+
+        // Do not use reserved keywords as names of local variables, fields, functions, or other identifiers
+        // "no-reserved-keywords": true,
+
+        // Passing a string instead of a function to set*() suffers from the same hazards as using eval.
+        "no-string-based-set-immediate": true,
+        "no-string-based-set-interval": true,
+        "no-string-based-set-timeout": true,
+
+        // For security reasons, it is best to only require() string literals
+        "non-literal-require": true,
+
+        // Do not compare against variables named password, secret, api, apiKey, token, auth, pass, or hash
+        // ref: https://snyk.io/blog/node-js-timing-attack-ccc-ctf/
+        "possible-timing-attack": true,
+
+        // For security reasons, anchor tags with target="_blank" should also include rel="noopener noreferrer"
+        "react-anchor-blank-noopener": true,
+
+        // React iframes must specify a sandbox attribute.
+        "react-iframe-missing-sandbox": true,
+
+        // Do not use React's dangerouslySetInnerHTML API
+        "react-no-dangerous-html": true,
+
+        /**
+         * Common Bugs and Correctness. The following rules should be turned on because they find
+         * common bug patterns in the code or enforce type safety.
+         */
+
+        // Bitwise operators are often typos (use tslint:disable:no-bitwise when you need)
+        "no-bitwise": true,
+
+        // Do not use constant expressions in conditions
+        //   ex: if (false) {...} is disallowed but while(true){...} is allowed
+        "no-constant-condition": [
+            true,
+            {
+                "checkLoops": false
+            }
+        ],
+
+        // Control characters are special, invisible characters in the ASCII range 0-31
+        "no-control-regex": true,
+
+        // Do not use duplicate case labels in switch statements
+        "no-duplicate-switch-case": true,
+
+        // Disallows duplicate variable declarations in the same block scope.
+        "no-duplicate-variable": true,
+
+        // Avoid import statements with side-effect.
+        "no-import-side-effect": [
+            true,
+            {
+                "ignore-module": "(\\.html|\\.css|\\.scss|\\.sass)$"
+            }
+        ],
+
+        // disallows invalid regular expression strings in RegExp constructors
+        "no-invalid-regexp": true,
+
+        // Warns on use of ${ in non-template strings.
+        "no-invalid-template-strings": true,
+
+        // Disallow the operation x! produces a value of the type of x with null and undefined excluded
+        // "no-non-null-assertion": true,
+
+        // It’s better to use only one space and then specify how many spaces are expected, such as:
+        // re = foo {3}bar/;
+        "no-regex-spaces": true,
+
+        // Missing elements are probably an accidentally duplicated comma.
+        "no-sparse-arrays": true,
+
+        // A stateless class is defined as a class with only static members and no parent class.
+        "no-unnecessary-class": true,
+
+        // Do not bind 'this' as the context for a function literal or lambda expression
+        "no-unnecessary-bind": true,
+        "no-unnecessary-callback-wrapper": true,
+
+        // Do not write a method that only calls super() on the parent method with the same arguments
+        "no-unnecessary-override": true,
+
+        // Do not use with statements. Assign the item to a new variable instead
+        "no-with-statement": true,
+
+        // When a Promise instance is created, then either the reject() or resolve()
+        // parameter must be called on it within all code branches in the scope
+        "promise-must-complete": true,
+
+        // Remove unneeded properties defined in React Props and State interfaces
+        "react-unused-props-and-state": true,
+
+        // Require a default case in all switch statements.
+        "switch-default": true,
+
+        // Do not reference the arguments object by numerical index; instead, use a named parameter
+        "use-named-parameter": true,
+
+        /**
+         * Accessibility. The following rules should be turned on to guarantee the best user
+         * experience for keyboard and screen reader users.
+         */
+
+        // anchor element link text should be at least 4 characters long
+        "react-a11y-anchors": true,
+
+        // enforce that elements that do not support ARIA roles, states, and properties do not have those attributes
+        "react-a11y-aria-unsupported-elements": true,
+
+        // elements with event handlers must have explicit role or implicit role
+        "react-a11y-event-has-role": true,
+
+        // enforce that inputs element with type="image" must have non-empty alt attribute
+        "react-a11y-image-button-has-alt": true,
+
+        // enforce that an img element contains the alt attribute or role='presentation' for a decorative image.
+        "react-a11y-img-has-alt": true,
+
+        // HTML elements must have a lang attribute and the attribute must be a valid language code
+        "react-a11y-lang": true,
+
+        // HTML meta elements must not have http-equiv="refresh".
+        "react-a11y-meta": true,
+
+        // elements cannot use an invalid aria-* attribute.
+        // https://www.w3.org/TR/wai-aria/states_and_properties#state_prop_def
+        "react-a11y-props": true,
+
+        // enforce the type of aria state and property values are correct.
+        "react-a11y-proptypes": true,
+
+        // elements with aria roles must use a valid, non-abstract aria role
+        "react-a11y-role": true,
+
+        // enforce that elements with explicit or implicit roles defined contain
+        // only aria-* properties supported by that role
+        // https://www.w3.org/TR/wai-aria/roles#role_definitions
+        "react-a11y-role-has-required-aria-props": true,
+        "react-a11y-role-supports-aria-props": true,
+
+        // enforce tabindex value is not greater than zero
+        // https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules#tabindex-usage
+        // Setting tabindex to a negative value will allow the element to be focused programmatically,
+        // but not place it in the tab order
+        "react-a11y-tabindex-no-positive": true,
+
+        // HTML title elements must not be empty, must be more than one word,
+        // and must not be more than 60 characters long
+        "react-a11y-titles": true
+    }
+}
