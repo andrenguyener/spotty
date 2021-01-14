@@ -1,33 +1,42 @@
-import NextAuth from "next-auth";
+import axios from "axios";
+import { NextApiHandler } from "next";
+import NextAuth, { InitOptions } from "next-auth";
 import Providers from "next-auth/providers";
 
-const options = {
+import { config } from "./../../../utils";
+
+const options: InitOptions = {
     // @link https://next-auth.js.org/configuration/providers
     providers: [
-        Providers.Email({
-            // SMTP connection string or nodemailer configuration object https://nodemailer.com/
-            server: process.env.NEXTAUTH_EMAIL_SERVER,
-            // Email services often only allow sending email from a valid/verified address
-            from: process.env.NEXTAUTH_EMAIL_FROM,
-        }),
-        // When configuring oAuth providers make sure you enabling requesting
-        // permission to get the users email address (required to sign in)
-        Providers.Google({
-            clientId: process.env.NEXTAUTH_GOOGLE_ID,
-            clientSecret: process.env.NEXTAUTH_GOOGLE_SECRET,
-        }),
-        Providers.Facebook({
-            clientId: process.env.NEXTAUTH_FACEBOOK_ID,
-            clientSecret: process.env.NEXTAUTH_FACEBOOK_SECRET,
-        }),
-        Providers.Twitter({
-            clientId: process.env.NEXTAUTH_TWITTER_ID,
-            clientSecret: process.env.NEXTAUTH_TWITTER_SECRET,
-        }),
-        Providers.GitHub({
-            clientId: process.env.NEXTAUTH_GITHUB_ID,
-            clientSecret: process.env.NEXTAUTH_GITHUB_SECRET,
-        }),
+        Providers.Spotify({
+            scope: `
+                app-remote-control
+                user-read-private 
+                user-read-email 
+                user-read-recently-played 
+                user-read-playback-state
+                user-read-currently-playing
+                user-read-playback-position
+                user-library-read
+                user-top-read 
+                user-follow-read 
+                user-follow-modify 
+                playlist-read-private 
+                playlist-read-collaborative 
+                playlist-modify-public
+            `,
+            clientId: process.env.SPOTIFY_CLIENT_ID as string,
+            clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
+            // Todo remove this once published https://github.com/nextauthjs/next-auth/pull/914
+            profile: (profile: any) => {
+                return {
+                    id: profile.id,
+                    name: profile.display_name,
+                    email: profile.email,
+                    image: profile.images?.[0]?.url,
+                };
+            },
+        } as any),
     ],
 
     // @link https://next-auth.js.org/configuration/databases
@@ -35,8 +44,9 @@ const options = {
 
     // @link https://next-auth.js.org/configuration/options#session
     session: {
+        jwt: true,
         // Use JSON Web Tokens for session instead of database sessions.
-        // This option can be used with or without a database for users/accounts.
+        // This option can be used with or without a databas for users/accounts.
         // Note: `jwt` is automatically set to `true` if no database is specified.
         // jwt: true,
         // Seconds - How long until an idle session expires and is no longer valid.
@@ -62,6 +72,13 @@ const options = {
 
     // @link https://next-auth.js.org/configuration/callbacks
     callbacks: {
+        // redirect: async (url, _) => {
+        //     if (url === "/api/auth/signin") {
+        //         return Promise.resolve("/profile");
+        //     } else {
+        //         return Promise.resolve(url);
+        //     }
+        // },
         /**
          * Intercept signIn request and return true if the user is allowed.
          *
@@ -73,7 +90,10 @@ const options = {
          *                           Return `false` to deny access
          */
         signIn: async (user, account, profile) => {
-            return true;
+            if (user) {
+                return Promise.resolve(true);
+            }
+            return Promise.resolve(false);
         },
 
         /**
@@ -83,9 +103,11 @@ const options = {
          *                               JSON Web Token (if not using database sessions)
          * @return {object}              Session that will be returned to the client
          */
-        session: async (session, user) => {
-            //session.customSessionProperty = 'bar'
-            return Promise.resolve(session);
+        session: async (session, token) => {
+            console.warn("SESSION");
+            console.warn({ ...session, ...token });
+            console.warn("SESSION END");
+            return Promise.resolve({ ...session, ...token });
         },
 
         /**
@@ -98,9 +120,40 @@ const options = {
          * @return {object}            JSON Web Token that will be saved
          */
         jwt: async (token, user, account, profile, isNewUser) => {
-            //const isSignIn = (user) ? true : false
             // Add auth_time to token on signin in
-            //if (isSignIn) { token.auth_time = Math.floor(Date.now() / 1000) }
+            if (!!user) {
+                token.auth_time = Math.floor(Date.now());
+                token.accessToken = account.accessToken;
+                token.refreshToken = account.refreshToken;
+            }
+
+            if (Date.now() - token.auth_time > config.EXPIRATION_TIME) {
+                const response = await axios({
+                    method: "post",
+                    url: "https://accounts.spotify.com/api/token",
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(
+                            `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
+                        ).toString("base64")}`,
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    params: {
+                        grant_type: "refresh_token",
+                        refresh_token: token.refreshToken,
+                    },
+                });
+                console.warn("RESPONSE");
+                console.warn(response.data);
+                console.warn("RESPONSE END");
+                if (response.status === 200) {
+                    const { access_token } = response.data;
+                    token.accessToken = access_token;
+                }
+            }
+
+            console.warn("TOKEN");
+            console.warn(token, user, account);
+            console.warn("TOKEN END");
             return Promise.resolve(token);
         },
     },
@@ -109,7 +162,7 @@ const options = {
     // The routes shown here are the default URLs that will be used.
     // @link https://next-auth.js.org/configuration/pages
     pages: {
-        //signIn: '/api/auth/signin',
+        // signIn: "/auth/signin",
         //signOut: '/api/auth/signout',
         //error: '/api/auth/error', // Error code passed in query string as ?error=
         //verifyRequest: '/api/auth/verify-request', // (used for check email message)
@@ -121,6 +174,6 @@ const options = {
     // debug: true, // Use this option to enable debug messages in the console
 };
 
-const Auth = (req, res) => NextAuth(req, res, options);
+const Auth: NextApiHandler = (req, res) => NextAuth(req, res, options);
 
 export default Auth;
