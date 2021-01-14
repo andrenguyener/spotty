@@ -100,7 +100,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     font-family: ${fonts.primary};
     font-size: ${fontSizes.base};
-    background-color: ${colors.black};
+    background-color: ${colors.lightBlack};
     color: ${colors.white};
   }
 
@@ -109,7 +109,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -.025em;
+    letter-spacing: 0.25em;
     margin: 0 0 10px;
     font-weight: 700;
   }

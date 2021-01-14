@@ -9,40 +9,73 @@ const Login = styled(Main)`
     ${mixins.flexCenter};
     flex-direction: column;
     min-height: 100vh;
+    background-color: ${colors.lightBlack};
     h1 {
         font-size: ${fontSizes.xxl};
     }
 `;
-const LoginButton = styled.button`
-    display: inline-block;
-    background-color: ${colors.green};
-    color: ${colors.white};
-    border-radius: 30px;
-    padding: 17px 35px;
-    margin: 20px 0 70px;
-    min-width: 160px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+const LoginButton = styled.div`
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    position: relative;
+    border: 2px solid white;
+    color: ${colors.lightGrey};
     text-align: center;
+    color: ${colors.white};
+    letter-spacing: 2px;
+    text-transform: lowercase;
+    text-align: center;
+    transition: 0.5s ${theme.easing.easeInOutCubic};
+
     &:hover,
     &:focus {
-        background-color: ${colors.offGreen};
+        background-color: ${colors.blue};
+        cursor: pointer;
+    }
+
+    &::after,
+    &::before {
+        content: "";
+        position: absolute;
+        border: 2px solid white;
+        width: calc(100% + 15px);
+        height: 60px;
+        transition: 0.5s ease;
+    }
+
+    &::after {
+        top: -15px;
+        left: -15px;
+        border-right: none;
+        border-bottom: none;
+    }
+
+    &::before {
+        bottom: -15px;
+        right: -15px;
+        border-left: none;
+        border-top: none;
+    }
+
+    &:hover:after,
+    &:hover:before {
+        width: calc(100% - 30px);
+        height: 80px;
     }
 `;
 
-const LoginScreen = () => (
-    <Login>
-        <h1>Spotify Profile</h1>
-        <LoginButton
-            onClick={(e) => {
-                e.preventDefault();
-                signIn("spotify");
-            }}
-        >
-            Log in to Spotify
-        </LoginButton>
-    </Login>
-);
+const LoginScreen = () => {
+    const onLoginClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.preventDefault();
+        signIn("spotify");
+    };
+
+    return (
+        <Login>
+            <h1>spotty</h1>
+            <LoginButton onClick={onLoginClick}>Log in to Spotify</LoginButton>
+        </Login>
+    );
+};
 
 export default LoginScreen;

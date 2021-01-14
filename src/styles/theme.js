@@ -2,18 +2,19 @@ const theme = {
   colors: {
     green: '#1DB954',
     offGreen: '#1ed760',
-    blue: '#509bf5',
-    navBlack: '#040306',
-    black: '#181818',
+    blue: '#3d51fa',
+    navBlack: '#191a1f',
+    lightBlack: "#202127",
+    black: '#0f0f10',
     white: '#FFFFFF',
     lightestGrey: '#b3b3b3',
-    lightGrey: '#9B9B9B',
+    lightGrey: '#48494e',
     grey: '#404040',
     darkGrey: '#282828',
   },
 
   fonts: {
-    primary: 'Circular Std, system, -apple-system, BlinkMacSystemFont, sans-serif',
+    primary: 'Rosario, monospace',
   },
 
   fontSizes: {
@@ -49,7 +50,7 @@ const theme = {
 
   transition: `all 0.25s cubic-bezier(0.3, 0, 0.4, 1);`,
 
-  navWidth: '100px',
+  navWidth: '225px',
   navHeight: '70px',
 };
 

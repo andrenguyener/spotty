@@ -5102,6 +5102,11 @@ next-auth@^3.1.0:
     require_optional "^1.0.1"
     typeorm "^0.2.24"
 
+next-google-fonts@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/next-google-fonts/-/next-google-fonts-1.2.1.tgz#0b517cff3f34b8f7836f81eb9427973c8b4ac03e"
+  integrity sha512-BhVSldP1oZBTwXeJdMtjmu2qbDT1EkbQO2rG83Oj6APYm6aUsIcMu00Pzkzd8TTkrQW9HyC08Pzr10PY4pE6jA==
+
 next-on-netlify@^2.7.2:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/next-on-netlify/-/next-on-netlify-2.7.2.tgz#fa79188f8c81077c823406ad7f40c9cee27c9727"

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { GlobalStyle, media, theme } from "../styles";
 import { setToken } from "./../spotify";
 import LoginScreen from "./LoginScreen";
+import Nav from "./Nav";
 
 const StructureContainer = styled.div`
     height: 100%;
@@ -37,7 +38,10 @@ const Structure: React.FC = (props) => {
             {loading ? (
                 <h1>Loading</h1>
             ) : isReady ? (
-                <SiteWrapper>{props.children}</SiteWrapper>
+                <SiteWrapper>
+                    <Nav />
+                    {props.children}
+                </SiteWrapper>
             ) : (
                 <LoginScreen />
             )}

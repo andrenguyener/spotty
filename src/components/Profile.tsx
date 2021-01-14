@@ -113,7 +113,7 @@ const TracklistHeading = styled.div`
         margin: 0;
     }
 `;
-const MoreButton = styled(Link)`
+const MoreButton = styled.div`
     ${mixins.button};
     text-align: center;
     white-space: nowrap;
@@ -153,7 +153,7 @@ const Artist = styled.li`
         }
     }
 `;
-const ArtistArtwork = styled(Link)`
+const ArtistArtwork = styled.div`
     display: inline-block;
     position: relative;
     width: 50px;
@@ -168,7 +168,7 @@ const ArtistArtwork = styled(Link)`
     }
 `;
 
-const ArtistName = styled(Link)`
+const ArtistName = styled.div`
     flex-grow: 1;
     span {
         border-bottom: 1px solid transparent;

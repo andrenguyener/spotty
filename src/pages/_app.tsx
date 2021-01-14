@@ -1,5 +1,7 @@
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/app";
+import Head from "next/head";
+import GoogleFonts from "next-google-fonts";
 
 import Structure from "./../components/Structure";
 import { config } from "./../utils";
@@ -8,17 +10,25 @@ const App = ({ Component, pageProps }: AppProps) => {
     const { session } = pageProps;
 
     return (
-        <Provider
-            session={session}
-            options={{
-                clientMaxAge: config.EXPIRATION_TIME,
-                keepAlive: config.KEEP_ALIVE,
-            }}
-        >
-            <Structure>
-                <Component {...pageProps} />
-            </Structure>
-        </Provider>
+        <>
+            <GoogleFonts href="https://fonts.googleapis.com/css2?family=Rosario:wght@300&family=Space+Mono&display=swap" />
+            <Head>
+                {/* tslint:disable-next-line:react-a11y-titles */}
+                <title>Spotty</title>
+                <meta property="og:title" content="Spotty" key="music profile" />
+            </Head>
+            <Provider
+                session={session}
+                options={{
+                    clientMaxAge: config.EXPIRATION_TIME,
+                    keepAlive: config.KEEP_ALIVE,
+                }}
+            >
+                <Structure>
+                    <Component {...pageProps} />
+                </Structure>
+            </Provider>
+        </>
     );
 };
 
