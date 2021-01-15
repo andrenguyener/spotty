@@ -109,7 +109,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: 0.25em;
+    letter-spacing: 0.15em;
     margin: 0 0 10px;
     font-weight: 700;
   }
@@ -167,7 +167,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${fonts.primary};
     font-size: ${fontSizes.base};
     font-weight: 700;
-    border-radius: 50px;
+    /* border-radius: 50px; */
     border: 0;
     padding: 10px 20px;
     cursor: pointer;

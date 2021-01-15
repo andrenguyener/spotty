@@ -7,7 +7,7 @@ const Main = styled.main`
   margin: 0 auto;
   max-width: 1400px;
   min-height: 100vh;
-  padding: 80px;
+  padding: 40px 80px 80px 80px;
   background-color: ${theme.colors.lightBlack};
   ${media.desktop`
     padding: 60px 50px;

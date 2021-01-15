@@ -1,15 +1,18 @@
-import { useSession } from "next-auth/client";
+import { useSession, signOut } from "next-auth/client";
 import React from "react";
 import styled from "styled-components";
 
 import { GlobalStyle, media, theme } from "../styles";
 import { setToken } from "./../spotify";
 import LoginScreen from "./LoginScreen";
+import Loader from "./Loader";
+import { useDelayedRender } from "./../utils";
 import Nav from "./Nav";
 
 const StructureContainer = styled.div`
     height: 100%;
     min-height: 100vh;
+    position: relative;
 `;
 
 const SiteWrapper = styled.div`
@@ -20,8 +23,25 @@ const SiteWrapper = styled.div`
   `};
 `;
 
+const TopBar = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem 2rem;
+`;
+
+const SignOutButton = styled.div`
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    color: ${theme.colors.lightGrey};
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
 const Structure: React.FC = (props) => {
     const [session, loading] = useSession();
+    const delay = useDelayedRender(1500);
     const [isReady, setIsReady] = React.useState(false);
 
     React.useEffect(() => {
@@ -31,15 +51,22 @@ const Structure: React.FC = (props) => {
         }
     }, [session]);
 
+    const onSignOut = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.preventDefault();
+        signOut();
+    };
+
     return (
         <StructureContainer>
             <GlobalStyle />
-
-            {loading ? (
-                <h1>Loading</h1>
+            {loading || !delay ? (
+                <Loader />
             ) : isReady ? (
                 <SiteWrapper>
                     <Nav />
+                    <TopBar>
+                        <SignOutButton onClick={onSignOut}>Logout</SignOutButton>
+                    </TopBar>
                     {props.children}
                 </SiteWrapper>
             ) : (

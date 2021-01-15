@@ -1,3 +1,4 @@
+import { rgba } from "polished";
 import { css } from 'styled-components';
 import theme from './theme';
 const { colors, fontSizes } = theme;
@@ -46,12 +47,34 @@ const mixins = {
     font-weight: 700;
     font-size: ${fontSizes.xs};
     letter-spacing: 1px;
-    text-transform: uppercase;
-    border: 1px solid ${colors.white};
-    border-radius: 50px;
+    /* text-transform: uppercase; */
+    /* border: 1px solid ${colors.white}; */
+    border-radius: 5px;
     padding: 11px 24px;
     cursor: pointer;
     transition: ${theme.transition};
+    background-color: ${colors.lightMediumGrey};
+
+    &:hover,
+    &:focus {
+      color: ${colors.black};
+      background: ${colors.white};
+      box-shadow: 0.1em 0.1em 0.5em ${rgba(colors.white, 0.5)};
+      outline: 0;
+    }
+  `,
+
+  buttonGhost: css`
+   display: inline-block;
+    color: ${colors.white};
+    font-weight: 700;
+    font-size: ${fontSizes.xs};
+    letter-spacing: 1px;
+    border: 1px solid ${colors.lightMediumGrey};
+    border-radius: 5px;
+    padding: 11px 24px;
+    cursor: pointer;
+    transition: ${theme.transition};    
 
     &:hover,
     &:focus {

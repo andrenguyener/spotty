@@ -3,18 +3,20 @@ const theme = {
     green: '#1DB954',
     offGreen: '#1ed760',
     blue: '#3d51fa',
+    offBlue: "#2f3ca7",
     navBlack: '#191a1f',
     lightBlack: "#202127",
     black: '#0f0f10',
     white: '#FFFFFF',
     lightestGrey: '#b3b3b3',
-    lightGrey: '#48494e',
+    lightMediumGrey: "#2c2d32",
+    lightGrey: '#7c7c80',
     grey: '#404040',
     darkGrey: '#282828',
   },
 
   fonts: {
-    primary: 'Rosario, monospace',
+    primary: 'Darker Grotesque, Rosario, monospace',
   },
 
   fontSizes: {

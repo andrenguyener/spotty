@@ -2,6 +2,7 @@ import { signIn } from "next-auth/client";
 import React from "react";
 import styled from "styled-components";
 
+import { IconSpotify } from "./icons";
 import { Main, mixins, theme } from "../styles";
 const { colors, fontSizes } = theme;
 
@@ -12,18 +13,19 @@ const Login = styled(Main)`
     background-color: ${colors.lightBlack};
     h1 {
         font-size: ${fontSizes.xxl};
+        letter-spacing: 0.25em;
     }
 `;
 const LoginButton = styled.div`
     margin-top: 2rem;
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
     position: relative;
     border: 2px solid white;
     color: ${colors.lightGrey};
     text-align: center;
     color: ${colors.white};
     letter-spacing: 2px;
-    text-transform: lowercase;
+    /* text-transform: lowercase; */
     text-align: center;
     transition: 0.5s ${theme.easing.easeInOutCubic};
 
@@ -64,6 +66,12 @@ const LoginButton = styled.div`
     }
 `;
 
+const Logo = styled.div`
+    display: inline-block;
+    width: 30px;
+    margin-right: 12px;
+`;
+
 const LoginScreen = () => {
     const onLoginClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
@@ -73,7 +81,12 @@ const LoginScreen = () => {
     return (
         <Login>
             <h1>spotty</h1>
-            <LoginButton onClick={onLoginClick}>Log in to Spotify</LoginButton>
+            <LoginButton onClick={onLoginClick}>
+                <Logo>
+                    <IconSpotify />
+                </Logo>
+                Login with Spotify
+            </LoginButton>
         </Login>
     );
 };

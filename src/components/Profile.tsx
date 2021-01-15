@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
-import { catchErrors } from "../utils";
+import { catchErrors, useDelayedRender } from "../utils";
 
 import { IconUser, IconInfo } from "./../components/icons";
 import Loader from "./../components/Loader";
@@ -15,10 +15,19 @@ const { colors, fontSizes, spacing } = theme;
 const Link = (props) => <div>{props.children}</div>;
 
 const Header = styled.header`
-    ${mixins.flexCenter};
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
     position: relative;
 `;
+const SubHeader = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 25px;
+`;
+
 const Avatar = styled.div`
     width: 150px;
     height: 150px;
@@ -28,19 +37,20 @@ const Avatar = styled.div`
 `;
 const NoAvatar = styled.div`
     border: 2px solid currentColor;
-    border-radius: 100%;
+    border-radius: 10px;
     padding: ${spacing.md};
 `;
 const UserName = styled.a`
     &:hover,
     &:focus {
-        color: ${colors.offGreen};
+        color: ${colors.lightGrey};
     }
 `;
 const Name = styled.h1`
     font-size: 50px;
     font-weight: 700;
     margin: 20px 0 0;
+    letter-spacing: 0.05em;
     ${media.tablet`
     font-size: 40px;
   `};
@@ -58,7 +68,7 @@ const Stat = styled.div`
     text-align: center;
 `;
 const Number = styled.div`
-    color: ${colors.green};
+    color: ${colors.blue};
     font-weight: 700;
     font-size: ${fontSizes.md};
 `;
@@ -164,7 +174,7 @@ const ArtistArtwork = styled.div`
         min-width: 50px;
         height: 50px;
         margin-right: ${spacing.base};
-        border-radius: 100%;
+        border-radius: 5px;
     }
 `;
 
@@ -179,16 +189,16 @@ const ArtistName = styled.div`
     }
 `;
 
-const User: React.FC = (props) => {
-    const [state, setState] = React.useState({
-        user: null,
-        followedArtists: null,
-        playlists: null,
-        topArtists: null,
-        topTracks: null,
-    });
+interface State {
+    user?: SpotifyApi.UserObjectPublic;
+    followedArtists?: SpotifyApi.UsersFollowedArtistsResponse;
+    playlists?: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+    topArtists?: SpotifyApi.UsersTopArtistsResponse;
+    topTracks?: SpotifyApi.UsersTopTracksResponse;
+}
 
-    // const [session] = useSession();
+const User: React.FC = () => {
+    const [state, setState] = React.useState<State>({});
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -208,41 +218,43 @@ const User: React.FC = (props) => {
                 <Main>
                     <Header>
                         <Avatar>
-                            {user.images.length > 0 ? (
-                                <img src={user.images[0].url} alt="avatar" />
+                            {(user?.images?.length ?? 0) > 0 ? (
+                                <img src={user?.images?.[0]?.url} alt="avatar" />
                             ) : (
                                 <NoAvatar>
                                     <IconUser />
                                 </NoAvatar>
                             )}
                         </Avatar>
-                        <UserName
-                            href={user.external_urls.spotify}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Name>{user.display_name}</Name>
-                        </UserName>
-                        <Stats>
-                            <Stat>
-                                <Number>{user.followers.total}</Number>
-                                <NumLabel>Followers</NumLabel>
-                            </Stat>
-                            {followedArtists && (
+                        <SubHeader>
+                            <UserName
+                                href={user.external_urls.spotify}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <Name>{user.display_name}</Name>
+                            </UserName>
+                            <Stats>
                                 <Stat>
-                                    <Number>{followedArtists.artists.items.length}</Number>
-                                    <NumLabel>Following</NumLabel>
+                                    <Number>{user.followers?.total}</Number>
+                                    <NumLabel>Followers</NumLabel>
                                 </Stat>
-                            )}
-                            {totalPlaylists && (
-                                <Stat>
-                                    <Link to="playlists">
-                                        <Number>{totalPlaylists}</Number>
-                                        <NumLabel>Playlists</NumLabel>
-                                    </Link>
-                                </Stat>
-                            )}
-                        </Stats>
+                                {followedArtists && (
+                                    <Stat>
+                                        <Number>{followedArtists.artists.items.length}</Number>
+                                        <NumLabel>Following</NumLabel>
+                                    </Stat>
+                                )}
+                                {totalPlaylists && (
+                                    <Stat>
+                                        <Link to="playlists">
+                                            <Number>{totalPlaylists}</Number>
+                                            <NumLabel>Playlists</NumLabel>
+                                        </Link>
+                                    </Stat>
+                                )}
+                            </Stats>
+                        </SubHeader>
                         {/* <LogoutButton onClick={logout}>Logout</LogoutButton> */}
                     </Header>
 

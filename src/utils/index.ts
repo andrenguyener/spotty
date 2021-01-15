@@ -1,3 +1,5 @@
+import React from "react";
+
 export const config = {
     EXPIRATION_TIME: (3600 * 1000) / 2, // 3600 seconds * 1000 = 1 hour in milliseconds = 30min
     KEEP_ALIVE: 60 * 30, // 30min
@@ -77,4 +79,13 @@ export const catchErrors = (fn) => {
             console.error(err);
         });
     };
+};
+
+export const useDelayedRender = (delay: number) => {
+    const [delayed, setDelayed] = React.useState(true);
+    React.useEffect(() => {
+        const timeout = setTimeout(() => setDelayed(false), delay);
+        return () => clearTimeout(timeout);
+    }, []);
+    return !delayed;
 };
