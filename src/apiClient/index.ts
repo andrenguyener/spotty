@@ -259,17 +259,4 @@ export const getUserInfo = async () => {
         topArtists: topArtists.data,
         topTracks: topTracks.data,
     };
-    // return axios
-    //     .all([getUser(), getFollowing(), getPlaylists(), getTopArtistsLong(), getTopTracksLong()])
-    //     .then(
-    //         axios.spread((user, followedArtists, playlists, topArtists, topTracks) => {
-    //             return {
-    //                 user: user.data,
-    //                 followedArtists: followedArtists.data,
-    //                 playlists: playlists.data,
-    //                 topArtists: topArtists.data,
-    //                 topTracks: topTracks.data,
-    //             };
-    //         })
-    //     );
 };

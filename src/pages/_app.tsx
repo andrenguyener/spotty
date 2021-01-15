@@ -1,7 +1,7 @@
 import { Provider } from "next-auth/client";
+import GoogleFonts from "next-google-fonts";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import GoogleFonts from "next-google-fonts";
 
 import Structure from "./../components/Structure";
 import { config } from "./../utils";

@@ -104,9 +104,6 @@ const options: InitOptions = {
          * @return {object}              Session that will be returned to the client
          */
         session: async (session, token) => {
-            console.warn("SESSION");
-            console.warn({ ...session, ...token });
-            console.warn("SESSION END");
             return Promise.resolve({ ...session, ...token });
         },
 
@@ -127,6 +124,7 @@ const options: InitOptions = {
                 token.refreshToken = account.refreshToken;
             }
 
+            // Refresh access token if it expired
             if (Date.now() - token.auth_time > config.EXPIRATION_TIME) {
                 const response = await axios({
                     method: "post",
@@ -142,18 +140,11 @@ const options: InitOptions = {
                         refresh_token: token.refreshToken,
                     },
                 });
-                console.warn("RESPONSE");
-                console.warn(response.data);
-                console.warn("RESPONSE END");
                 if (response.status === 200) {
                     const { access_token } = response.data;
                     token.accessToken = access_token;
                 }
             }
-
-            console.warn("TOKEN");
-            console.warn(token, user, account);
-            console.warn("TOKEN END");
             return Promise.resolve(token);
         },
     },
@@ -171,7 +162,7 @@ const options: InitOptions = {
 
     // Additional options
     // secret: 'abcdef123456789' // Recommended (but auto-generated if not specified)
-    // debug: true, // Use this option to enable debug messages in the console
+    debug: true, // Use this option to enable debug messages in the console
 };
 
 const Auth: NextApiHandler = (req, res) => NextAuth(req, res, options);

@@ -16,6 +16,7 @@ const Login = styled(Main)`
         letter-spacing: 0.25em;
     }
 `;
+
 const LoginButton = styled.div`
     margin-top: 2rem;
     padding: 1rem 1.5rem;
@@ -25,7 +26,6 @@ const LoginButton = styled.div`
     text-align: center;
     color: ${colors.white};
     letter-spacing: 2px;
-    /* text-transform: lowercase; */
     text-align: center;
     transition: 0.5s ${theme.easing.easeInOutCubic};
 

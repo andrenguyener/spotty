@@ -1,15 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { formatDuration } from "../utils";
 import Link from "next/link";
+import React from "react";
+import styled from "styled-components";
 
+import { formatDuration } from "../utils";
 import { IconInfo } from "./icons";
 
-import styled from "styled-components";
-import { theme, mixins, media } from "../styles";
+import { media, mixins, theme } from "../styles";
 const { colors, fontSizes, spacing } = theme;
-
-// const Link = (props) => <span>{props.children}</span>;
 
 const TrackLeft = styled.span`
     ${mixins.overflowEllipsis};
@@ -78,15 +75,15 @@ const TrackDuration = styled.span`
     font-size: ${fontSizes.sm};
 `;
 
-const TrackLink = (props) => {
+const TrackLink: React.FC<{ href: string }> = (props) => {
     return (
-        <Link {...props} passHref={true}>
+        <Link href={props.href} passHref={true}>
             <TrackContainer>{props.children}</TrackContainer>
         </Link>
     );
 };
 
-const TrackItem = ({ track }) => (
+const TrackItem = ({ track }: { track: SpotifyApi.TrackObjectFull }) => (
     <li>
         <TrackLink href={`/track/${track.id}`}>
             <>
@@ -130,9 +127,5 @@ const TrackItem = ({ track }) => (
         </TrackLink>
     </li>
 );
-
-TrackItem.propTypes = {
-    track: PropTypes.object.isRequired,
-};
 
 export default TrackItem;

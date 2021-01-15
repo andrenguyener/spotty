@@ -8,12 +8,12 @@ export const config = {
 // Format milliseconds into MM:SS
 export const formatDuration = (millis: number) => {
     const minutes = Math.floor(millis / 60000);
-    const seconds = ((millis % 60000) / 1000).toFixed(0);
+    const seconds = ((millis % 60000) / 1000).toFixed(0) as any;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };
 
 // Format milliseconds into X minutes and Y seconds
-export const formatDurationForHumans = (millis) => {
+export const formatDurationForHumans = (millis: number) => {
     const minutes = Math.floor(millis / 60000);
     const seconds = ((millis % 60000) / 1000).toFixed(0);
     return `${minutes} Mins ${seconds} Secs`;
@@ -24,7 +24,7 @@ export const getYear = (date: string) => date.split("-")[0];
 
 // Transform Pitch Class Notation to string
 export const parsePitchClass = (note: number) => {
-    let key = note;
+    let key: number | string = note;
 
     switch (note) {
         case 0:
@@ -73,9 +73,9 @@ export const parsePitchClass = (note: number) => {
 export const formatWithCommas = (n: string) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 // Higher-order function for async/await error handling
-export const catchErrors = (fn) => {
-    return function (...args) {
-        return fn(...args).catch((err) => {
+export const catchErrors = (fn: any) => {
+    return (...args: any) => {
+        return fn(...args).catch((err: any) => {
             console.error(err);
         });
     };

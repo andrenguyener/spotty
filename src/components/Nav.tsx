@@ -1,23 +1,12 @@
-import React from "react";
 import Link from "next/link";
-import { rgba } from "polished";
 import { useRouter } from "next/router";
-
-import {
-    IconSpotify,
-    IconUser,
-    IconTime,
-    IconMicrophone,
-    IconPlaylist,
-    IconMusic,
-    IconGithub,
-} from "./icons";
-
+import { rgba } from "polished";
+import React from "react";
 import styled from "styled-components";
-import { theme, mixins, media } from "../styles";
-const { colors } = theme;
 
-// const Link = (props) => <div>{props.children}</div>;
+import { media, mixins, theme } from "../styles";
+import { IconMicrophone, IconMusic, IconPlaylist, IconTime, IconUser } from "./icons";
+const { colors } = theme;
 
 const Container = styled.nav`
     ${mixins.coverShadow};
@@ -47,42 +36,42 @@ const Container = styled.nav`
     `};
     }
 `;
-const Logo = styled.div`
-    color: ${colors.green};
-    margin-top: 30px;
-    width: 70px;
-    height: 70px;
-    transition: ${theme.transition};
-    ${media.tablet`
-    display: none;
-  `};
-    &:hover,
-    &:focus {
-        color: ${colors.offGreen};
-    }
-    svg {
-        width: 50px;
-    }
-`;
-const Github = styled.div`
-    color: ${colors.lightGrey};
-    width: 45px;
-    height: 45px;
-    margin-bottom: 30px;
-    ${media.tablet`
-    display: none;
-  `};
-    a {
-        &:hover,
-        &:focus,
-        &.active {
-            color: ${colors.blue};
-        }
-        svg {
-            width: 30px;
-        }
-    }
-`;
+// const Logo = styled.div`
+//     color: ${colors.green};
+//     margin-top: 30px;
+//     width: 70px;
+//     height: 70px;
+//     transition: ${theme.transition};
+//     ${media.tablet`
+//     display: none;
+//   `};
+//     &:hover,
+//     &:focus {
+//         color: ${colors.offGreen};
+//     }
+//     svg {
+//         width: 50px;
+//     }
+// `;
+// const Github = styled.div`
+//     color: ${colors.lightGrey};
+//     width: 45px;
+//     height: 45px;
+//     margin-bottom: 30px;
+//     ${media.tablet`
+//     display: none;
+//   `};
+//     a {
+//         &:hover,
+//         &:focus,
+//         &.active {
+//             color: ${colors.blue};
+//         }
+//         svg {
+//             width: 30px;
+//         }
+//     }
+// `;
 const Menu = styled.ul`
     display: flex;
     flex-direction: column;
@@ -105,9 +94,7 @@ const MenuItem = styled.li`
 
 const NavLinkItem = styled.a`
     padding: 10px 0;
-    /* margin: 0 15px; */
     border-left: 5px solid transparent;
-    /* width: 100%; */
     display: flex;
     align-items: center;
 
@@ -138,7 +125,7 @@ const NavLinkItem = styled.a`
     }
 `;
 
-const NavLink = (props) => {
+const NavLink: React.FC<{ href: string }> = (props) => {
     const router = useRouter();
 
     return (
@@ -147,20 +134,12 @@ const NavLink = (props) => {
                 {props.children}
             </NavLinkItem>
         </Link>
-        // <NavLinkItem className={router.pathname === props.href ? "active" : undefined}>
-        //     <Link {...props} />
-        // </NavLinkItem>
     );
 };
 
 const Nav = () => {
     return (
         <Container>
-            {/* <Logo>
-      <Link to="/">
-        <IconSpotify />
-      </Link>
-    </Logo> */}
             <Menu>
                 <MenuItem>
                     <NavLink href="/">
@@ -174,7 +153,7 @@ const Nav = () => {
                     <NavLink href="/artists">
                         <>
                             <IconMicrophone />
-                            <div>hrefp Artists</div>
+                            <div>Top Artists</div>
                         </>
                     </NavLink>
                 </MenuItem>
@@ -182,7 +161,7 @@ const Nav = () => {
                     <NavLink href="/tracks">
                         <>
                             <IconMusic />
-                            <div>hrefp Tracks</div>
+                            <div>Top Tracks</div>
                         </>
                     </NavLink>
                 </MenuItem>

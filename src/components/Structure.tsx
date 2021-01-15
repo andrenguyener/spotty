@@ -1,9 +1,9 @@
-import { useSession, signOut } from "next-auth/client";
+import { signOut, useSession } from "next-auth/client";
 import React from "react";
 import styled from "styled-components";
 
 import { GlobalStyle, media, theme } from "../styles";
-import { setToken } from "./../spotify";
+import { setToken } from "./../apiClient";
 import LoginScreen from "./LoginScreen";
 import Loader from "./Loader";
 import { useDelayedRender } from "./../utils";

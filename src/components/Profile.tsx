@@ -1,18 +1,16 @@
-import React, { Component } from "react";
-import { signIn, signOut, useSession } from "next-auth/client";
-import { catchErrors, useDelayedRender } from "../utils";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import styled from "styled-components";
 
-import { IconUser, IconInfo } from "./../components/icons";
+import { catchErrors } from "../utils";
+import { getUserInfo } from "./../apiClient";
+import { IconInfo, IconUser } from "./../components/icons";
 import Loader from "./../components/Loader";
 import TrackItem from "./../components/TrackItem";
-import Structure from "./../components/Structure";
-import { getUserInfo } from "./../spotify";
 
-import styled from "styled-components";
 import { theme, mixins, media, Main } from "../styles";
 const { colors, fontSizes, spacing } = theme;
-
-const Link = (props) => <div>{props.children}</div>;
 
 const Header = styled.header`
     display: flex;
@@ -79,24 +77,7 @@ const NumLabel = styled.p`
     letter-spacing: 1px;
     margin-top: ${spacing.xs};
 `;
-const LogoutButton = styled.a`
-    background-color: transparent;
-    color: ${colors.white};
-    border: 1px solid ${colors.white};
-    border-radius: 30px;
-    margin-top: 30px;
-    padding: 12px 30px;
-    font-size: ${fontSizes.xs};
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-align: center;
-    &:hover,
-    &:focus {
-        background-color: ${colors.white};
-        color: ${colors.black};
-    }
-`;
+const StyledA = styled.a``;
 const Preview = styled.section`
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -123,7 +104,7 @@ const TracklistHeading = styled.div`
         margin: 0;
     }
 `;
-const MoreButton = styled.div`
+const MoreButton = styled.button`
     ${mixins.button};
     text-align: center;
     white-space: nowrap;
@@ -199,6 +180,7 @@ interface State {
 
 const User: React.FC = () => {
     const [state, setState] = React.useState<State>({});
+    const router = useRouter();
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -211,6 +193,16 @@ const User: React.FC = () => {
 
     const { user, followedArtists, playlists, topArtists, topTracks } = state;
     const totalPlaylists = playlists ? playlists.total : 0;
+
+    const onMoreArtistsClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        router.push("/artists");
+    };
+
+    const onMoreTracksClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        router.push("/track");
+    };
 
     return (
         <React.Fragment>
@@ -247,42 +239,51 @@ const User: React.FC = () => {
                                 )}
                                 {totalPlaylists && (
                                     <Stat>
-                                        <Link to="playlists">
-                                            <Number>{totalPlaylists}</Number>
-                                            <NumLabel>Playlists</NumLabel>
+                                        <Link href="/playlists" passHref={true}>
+                                            <StyledA>
+                                                <Number>{totalPlaylists}</Number>
+                                                <NumLabel>Playlists</NumLabel>
+                                            </StyledA>
                                         </Link>
                                     </Stat>
                                 )}
                             </Stats>
                         </SubHeader>
-                        {/* <LogoutButton onClick={logout}>Logout</LogoutButton> */}
                     </Header>
 
                     <Preview>
                         <Tracklist>
                             <TracklistHeading>
                                 <h3>Top Artists of All Time</h3>
-                                <MoreButton to="/artists">See More</MoreButton>
+                                <MoreButton onClick={onMoreArtistsClick}>See More</MoreButton>
                             </TracklistHeading>
                             <div>
                                 {topArtists ? (
                                     <ul>
                                         {topArtists.items.slice(0, 10).map((artist, i) => (
                                             <Artist key={i}>
-                                                <ArtistArtwork to={`/artist/${artist.id}`}>
-                                                    {artist.images.length && (
-                                                        <img
-                                                            src={artist.images[2].url}
-                                                            alt="Artist"
-                                                        />
-                                                    )}
-                                                    <Mask>
-                                                        <IconInfo />
-                                                    </Mask>
-                                                </ArtistArtwork>
-                                                <ArtistName to={`/artist/${artist.id}`}>
-                                                    <span>{artist.name}</span>
-                                                </ArtistName>
+                                                <Link href={`/artist/${artist.id}`} passHref={true}>
+                                                    <StyledA>
+                                                        <ArtistArtwork>
+                                                            {artist.images.length && (
+                                                                <img
+                                                                    src={artist.images[2].url}
+                                                                    alt="Artist"
+                                                                />
+                                                            )}
+                                                            <Mask>
+                                                                <IconInfo />
+                                                            </Mask>
+                                                        </ArtistArtwork>
+                                                    </StyledA>
+                                                </Link>
+                                                <Link href={`/artist/${artist.id}`} passHref={true}>
+                                                    <StyledA>
+                                                        <ArtistName>
+                                                            <span>{artist.name}</span>
+                                                        </ArtistName>
+                                                    </StyledA>
+                                                </Link>
                                             </Artist>
                                         ))}
                                     </ul>
@@ -295,7 +296,7 @@ const User: React.FC = () => {
                         <Tracklist>
                             <TracklistHeading>
                                 <h3>Top Tracks of All Time</h3>
-                                <MoreButton to="/tracks">See More</MoreButton>
+                                <MoreButton onClick={onMoreTracksClick}>See More</MoreButton>
                             </TracklistHeading>
                             <ul>
                                 {topTracks ? (
