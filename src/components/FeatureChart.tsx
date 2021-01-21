@@ -26,8 +26,13 @@ const Container = styled.div`
     }
 `;
 
+type Features =
+    | SpotifyApi.AudioFeaturesResponse
+    | SpotifyApi.MultipleAudioFeaturesResponse
+    | SpotifyApi.AudioFeaturesObject[];
+
 const FeatureChart: React.FC<{
-    features: SpotifyApi.AudioFeaturesResponse | SpotifyApi.MultipleAudioFeaturesResponse;
+    features: Features;
     type: string;
 }> = (props) => {
     React.useEffect(() => {
@@ -45,16 +50,14 @@ const FeatureChart: React.FC<{
     };
 
     const isMultipleFeatures = (
-        features: SpotifyApi.AudioFeaturesResponse | SpotifyApi.MultipleAudioFeaturesResponse
-    ): features is SpotifyApi.MultipleAudioFeaturesResponse => {
+        features: Features
+    ): features is SpotifyApi.MultipleAudioFeaturesResponse | SpotifyApi.AudioFeaturesObject[] => {
         return Array.isArray(features);
     };
 
     const avg = (arr: any) => arr.reduce((a: number, b: number) => a + b, 0) / arr.length;
 
-    const createDataset = (
-        features: SpotifyApi.AudioFeaturesResponse | SpotifyApi.MultipleAudioFeaturesResponse
-    ): { [K in keyof typeof properties]: number } => {
+    const createDataset = (features: Features): { [K in keyof typeof properties]: number } => {
         const dataset = {};
 
         properties.forEach((prop) => {
