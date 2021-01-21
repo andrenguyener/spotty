@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 import { getTopTracksLong, getTopTracksMedium, getTopTracksShort } from "../apiClient";
 import { catchErrors } from "../utils";
-import Loader from "./Loader";
-import TrackItem from "./TrackItem";
+import { Loader, TrackItem } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
 const { colors, fontSizes } = theme;

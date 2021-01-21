@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { getRecentlyPlayed } from "../apiClient";
 import { Main } from "../styles";
 import { catchErrors } from "../utils";
-import Loader from "./Loader";
-import TrackItem from "./TrackItem";
+import { Loader, TrackItem } from "./../components";
 
 const TracksContainer = styled.ul`
     margin-top: 50px;

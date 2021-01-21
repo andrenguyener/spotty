@@ -1,6 +1,6 @@
 import React from "react";
 
-import RecentlyPlayed from "./../components/RecentlyPlayed";
+import { RecentlyPlayed } from "./../views";
 
 const Recent = () => {
     return <RecentlyPlayed />;

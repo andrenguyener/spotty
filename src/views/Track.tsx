@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 import { getTrackInfo } from "../apiClient";
 import { catchErrors, formatDuration, getYear, parsePitchClass } from "../utils";
-import FeatureChart from "./FeatureChart";
-import Loader from "./Loader";
+import { FeatureChart, Loader } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
 

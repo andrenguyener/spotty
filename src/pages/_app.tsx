@@ -3,7 +3,7 @@ import GoogleFonts from "next-google-fonts";
 import { AppProps } from "next/app";
 import Head from "next/head";
 
-import Structure from "./../components/Structure";
+import Structure from "./../layout/Structure";
 import { config } from "./../utils";
 
 const App = ({ Component, pageProps }: AppProps) => {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import TopArtists from "./../components/TopArtists";
+import { TopArtists } from "./../views";
 
 const Artists = () => {
     return <TopArtists />;

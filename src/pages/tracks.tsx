@@ -1,6 +1,6 @@
 import React from "react";
 
-import TopTracks from "./../components/TopTracks";
+import { TopTracks } from "./../views";
 
 const Tracks = () => {
     return <TopTracks />;

@@ -5,7 +5,9 @@ import React from "react";
 import styled from "styled-components";
 
 import { media, mixins, theme } from "../styles";
-import { IconMicrophone, IconMusic, IconPlaylist, IconTime, IconUser } from "./icons";
+import { Icons } from "./../components";
+
+const { IconMicrophone, IconMusic, IconPlaylist, IconTime, IconUser } = Icons;
 const { colors } = theme;
 
 const Container = styled.nav`

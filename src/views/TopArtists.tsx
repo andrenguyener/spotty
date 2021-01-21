@@ -3,11 +3,12 @@ import React from "react";
 import styled from "styled-components";
 
 import { getTopArtistsLong, getTopArtistsMedium, getTopArtistsShort } from "../apiClient";
-import { catchErrors } from "../utils";
-import { IconInfo } from "./icons";
-import Loader from "./Loader";
-
 import { Main, media, mixins, theme } from "../styles";
+import { catchErrors } from "../utils";
+import { Icons, Loader } from "./../components";
+
+const { IconInfo } = Icons;
+
 const { colors, fontSizes, spacing } = theme;
 
 const Header = styled.header`

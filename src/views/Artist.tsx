@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { doesUserFollowArtist, followArtist, getArtist } from "../apiClient";
 import { catchErrors, formatWithCommas } from "../utils";
-import Loader from "./Loader";
+import { Loader } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
 const { colors, fontSizes, spacing } = theme;

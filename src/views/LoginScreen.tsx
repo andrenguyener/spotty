@@ -3,7 +3,9 @@ import React from "react";
 import styled from "styled-components";
 
 import { Main, mixins, theme } from "../styles";
-import { IconSpotify } from "./icons";
+import { Icons } from "./../components";
+
+const { IconSpotify } = Icons;
 const { colors, fontSizes } = theme;
 
 const Login = styled(Main)`
