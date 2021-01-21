@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-import { theme, mixins } from "../styles";
+import { mixins, theme } from "../styles";
 const { colors } = theme;
 
 const Container = styled.div`

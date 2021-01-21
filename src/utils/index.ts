@@ -70,7 +70,7 @@ export const parsePitchClass = (note: number) => {
     return key;
 };
 
-export const formatWithCommas = (n: string) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export const formatWithCommas = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 // Higher-order function for async/await error handling
 export const catchErrors = (fn: any) => {

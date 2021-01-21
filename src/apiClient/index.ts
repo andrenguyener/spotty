@@ -206,6 +206,7 @@ export const getAudioFeaturesForTracks = (
 export const getRecommendationsForTracks = (
     tracks: { track: SpotifyApi.TrackObjectSimplified }[]
 ): Promise<AxiosResponse<SpotifyApi.RecommendationsFromSeedsResponse>> => {
+    // tslint:disable-next-line:insecure-random
     const shuffledTracks = tracks.sort(() => 0.5 - Math.random());
     const seed_tracks = getTrackIds(shuffledTracks.slice(0, 5));
     const seed_artists = "";

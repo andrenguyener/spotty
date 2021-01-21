@@ -9,7 +9,7 @@ import { IconInfo, IconUser } from "./../components/icons";
 import Loader from "./../components/Loader";
 import TrackItem from "./../components/TrackItem";
 
-import { theme, mixins, media, Main } from "../styles";
+import { Main, media, mixins, theme } from "../styles";
 const { colors, fontSizes, spacing } = theme;
 
 const Header = styled.header`
@@ -65,7 +65,7 @@ const Stats = styled.div`
 const Stat = styled.div`
     text-align: center;
 `;
-const Number = styled.div`
+const NumberDiv = styled.div`
     color: ${colors.blue};
     font-weight: 700;
     font-size: ${fontSizes.md};
@@ -170,16 +170,14 @@ const ArtistName = styled.div`
     }
 `;
 
-interface State {
-    user?: SpotifyApi.UserObjectPublic;
-    followedArtists?: SpotifyApi.UsersFollowedArtistsResponse;
-    playlists?: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
-    topArtists?: SpotifyApi.UsersTopArtistsResponse;
-    topTracks?: SpotifyApi.UsersTopTracksResponse;
-}
-
 const User: React.FC = () => {
-    const [state, setState] = React.useState<State>({});
+    const [state, setState] = React.useState<{
+        user?: SpotifyApi.UserObjectPublic;
+        followedArtists?: SpotifyApi.UsersFollowedArtistsResponse;
+        playlists?: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+        topArtists?: SpotifyApi.UsersTopArtistsResponse;
+        topTracks?: SpotifyApi.UsersTopTracksResponse;
+    }>({});
     const router = useRouter();
 
     React.useEffect(() => {
@@ -187,8 +185,20 @@ const User: React.FC = () => {
     }, []);
 
     const getData = async () => {
-        const { user, followedArtists, playlists, topArtists, topTracks } = await getUserInfo();
-        setState({ user, followedArtists, playlists, topArtists, topTracks });
+        const {
+            _user,
+            _followedArtists,
+            _playlists,
+            _topArtists,
+            _topTracks,
+        } = await getUserInfo();
+        setState({
+            user: _user,
+            followedArtists: _followedArtists,
+            playlists: _playlists,
+            topArtists: _topArtists,
+            topTracks: _topTracks,
+        });
     };
 
     const { user, followedArtists, playlists, topArtists, topTracks } = state;
@@ -201,7 +211,7 @@ const User: React.FC = () => {
 
     const onMoreTracksClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        router.push("/track");
+        router.push("/tracks");
     };
 
     return (
@@ -228,12 +238,14 @@ const User: React.FC = () => {
                             </UserName>
                             <Stats>
                                 <Stat>
-                                    <Number>{user.followers?.total}</Number>
+                                    <NumberDiv>{user.followers?.total}</NumberDiv>
                                     <NumLabel>Followers</NumLabel>
                                 </Stat>
                                 {followedArtists && (
                                     <Stat>
-                                        <Number>{followedArtists.artists.items.length}</Number>
+                                        <NumberDiv>
+                                            {followedArtists.artists.items.length}
+                                        </NumberDiv>
                                         <NumLabel>Following</NumLabel>
                                     </Stat>
                                 )}
@@ -241,7 +253,7 @@ const User: React.FC = () => {
                                     <Stat>
                                         <Link href="/playlists" passHref={true}>
                                             <StyledA>
-                                                <Number>{totalPlaylists}</Number>
+                                                <NumberDiv>{totalPlaylists}</NumberDiv>
                                                 <NumLabel>Playlists</NumLabel>
                                             </StyledA>
                                         </Link>

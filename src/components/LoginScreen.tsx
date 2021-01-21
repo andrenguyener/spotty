@@ -2,8 +2,8 @@ import { signIn } from "next-auth/client";
 import React from "react";
 import styled from "styled-components";
 
-import { IconSpotify } from "./icons";
 import { Main, mixins, theme } from "../styles";
+import { IconSpotify } from "./icons";
 const { colors, fontSizes } = theme;
 
 const Login = styled(Main)`

@@ -4,9 +4,9 @@ import styled from "styled-components";
 
 import { GlobalStyle, media, theme } from "../styles";
 import { setToken } from "./../apiClient";
-import LoginScreen from "./LoginScreen";
-import Loader from "./Loader";
 import { useDelayedRender } from "./../utils";
+import Loader from "./Loader";
+import LoginScreen from "./LoginScreen";
 import Nav from "./Nav";
 
 const StructureContainer = styled.div`

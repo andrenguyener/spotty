@@ -36,42 +36,7 @@ const Container = styled.nav`
     `};
     }
 `;
-// const Logo = styled.div`
-//     color: ${colors.green};
-//     margin-top: 30px;
-//     width: 70px;
-//     height: 70px;
-//     transition: ${theme.transition};
-//     ${media.tablet`
-//     display: none;
-//   `};
-//     &:hover,
-//     &:focus {
-//         color: ${colors.offGreen};
-//     }
-//     svg {
-//         width: 50px;
-//     }
-// `;
-// const Github = styled.div`
-//     color: ${colors.lightGrey};
-//     width: 45px;
-//     height: 45px;
-//     margin-bottom: 30px;
-//     ${media.tablet`
-//     display: none;
-//   `};
-//     a {
-//         &:hover,
-//         &:focus,
-//         &.active {
-//             color: ${colors.blue};
-//         }
-//         svg {
-//             width: 30px;
-//         }
-//     }
-// `;
+
 const Menu = styled.ul`
     display: flex;
     flex-direction: column;

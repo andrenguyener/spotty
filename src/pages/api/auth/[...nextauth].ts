@@ -89,7 +89,7 @@ const options: InitOptions = {
          * @return {boolean}         Return `true` (or a modified JWT) to allow sign in
          *                           Return `false` to deny access
          */
-        signIn: async (user, account, profile) => {
+        signIn: async (user, _account, _profile) => {
             if (user) {
                 return Promise.resolve(true);
             }
@@ -116,7 +116,7 @@ const options: InitOptions = {
          * @param  {boolean} isNewUser True if new user (only available on sign in)
          * @return {object}            JSON Web Token that will be saved
          */
-        jwt: async (token, user, account, profile, isNewUser) => {
+        jwt: async (token, user, account, _profile, _isNewUser) => {
             // Add auth_time to token on signin in
             if (!!user) {
                 token.auth_time = Math.floor(Date.now());
@@ -154,10 +154,10 @@ const options: InitOptions = {
     // @link https://next-auth.js.org/configuration/pages
     pages: {
         // signIn: "/auth/signin",
-        //signOut: '/api/auth/signout',
-        //error: '/api/auth/error', // Error code passed in query string as ?error=
-        //verifyRequest: '/api/auth/verify-request', // (used for check email message)
-        //newUser: null // If set, new users will be directed here on first sign in
+        // signOut: '/api/auth/signout',
+        // error: '/api/auth/error', // Error code passed in query string as ?error=
+        // verifyRequest: '/api/auth/verify-request', // (used for check email message)
+        // newUser: null // If set, new users will be directed here on first sign in
     },
 
     // Additional options
