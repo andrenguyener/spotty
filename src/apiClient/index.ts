@@ -209,15 +209,12 @@ export const getRecommendationsForTracks = (
     // tslint:disable-next-line:insecure-random
     const shuffledTracks = tracks.sort(() => 0.5 - Math.random());
     const seed_tracks = getTrackIds(shuffledTracks.slice(0, 5));
-    const seed_artists = "";
-    const seed_genres = "";
+    // const seed_artists = "";
+    // const seed_genres = "";
 
-    return axios.get(
-        `https://api.spotify.com/v1/recommendations?seed_tracks=${seed_tracks}&seed_artists=${seed_artists}&seed_genres=${seed_genres}`,
-        {
-            headers: headers(),
-        }
-    );
+    return axios.get(`https://api.spotify.com/v1/recommendations?seed_tracks=${seed_tracks}`, {
+        headers: headers(),
+    });
 };
 
 /**
