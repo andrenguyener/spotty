@@ -83,12 +83,22 @@ const TrackLink: React.FC<{ href: string }> = (props) => {
     );
 };
 
-const TrackItem = ({ track }: { track: SpotifyApi.TrackObjectFull }) => (
+const isObjectFull = (
+    track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified
+): track is SpotifyApi.TrackObjectFull => {
+    return !!(track.artists && (track as SpotifyApi.TrackObjectFull).album);
+};
+
+const TrackItem = ({
+    track,
+}: {
+    track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
+}) => (
     <li>
         <TrackLink href={`/track/${track.id}`}>
             <>
                 <TrackArtwork>
-                    {track.album.images.length && (
+                    {isObjectFull(track) && track.album.images.length && (
                         <img src={track.album.images[2].url} alt="Album Artwork" />
                     )}
                     <Mask>
@@ -99,7 +109,7 @@ const TrackItem = ({ track }: { track: SpotifyApi.TrackObjectFull }) => (
                 <TrackMeta>
                     <TrackLeft>
                         {track.name && <TrackName>{track.name}</TrackName>}
-                        {track.artists && track.album && (
+                        {isObjectFull(track) && (
                             <TrackAlbum>
                                 {track.artists &&
                                     track.artists.map(({ name }, i) => (

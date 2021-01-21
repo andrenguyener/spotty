@@ -63,16 +63,16 @@ const NumLabel = styled.p`
     margin-top: ${spacing.xs};
 `;
 const FollowButton = styled.button<{ isFollowing: boolean }>`
-    ${mixins.greenButton};
+    ${mixins.button};
     margin-top: 50px;
     padding: 12px 50px;
-    background-color: ${(props) => (props.isFollowing ? "transparent" : colors.green)};
+    background-color: ${(props) => (props.isFollowing ? "transparent" : colors.blue)};
     border: 1px solid ${(props) => (props.isFollowing ? "white" : "transparent")};
     pointer-events: ${(props) => (props.isFollowing ? "none" : "auto")};
     cursor: ${(props) => (props.isFollowing ? "default" : "pointer")};
     &:hover,
     &:focus {
-        background-color: ${(props) => (props.isFollowing ? "transparent" : colors.offGreen)};
+        background-color: ${(props) => (props.isFollowing ? "transparent" : colors.blue)};
     }
 `;
 

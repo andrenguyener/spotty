@@ -38,7 +38,8 @@ const Info = styled.div`
   `};
 `;
 const PlayTrackButton = styled.a`
-    ${mixins.greenButton};
+    margin-top: 12px;
+    ${mixins.button};
 `;
 const Title = styled.h1`
     font-size: 42px;
