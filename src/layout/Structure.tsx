@@ -1,10 +1,11 @@
 import { signOut, useSession } from "next-auth/client";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
 import { GlobalStyle, media, theme } from "../styles";
 import { setToken } from "./../apiClient";
-import { Loader } from "./../components";
+import { Loader, ScrollToTop } from "./../components";
 import { useDelayedRender } from "./../utils";
 import { LoginScreen } from "./../views";
 import Nav from "./Nav";
@@ -42,7 +43,10 @@ const SignOutButton = styled.div`
 const Structure: React.FC = (props) => {
     const [session, loading] = useSession();
     const delay = useDelayedRender(1500);
+    const router = useRouter();
     const [isReady, setIsReady] = React.useState(false);
+
+    const path = router.route;
 
     React.useEffect(() => {
         if (session) {
@@ -63,11 +67,13 @@ const Structure: React.FC = (props) => {
                 <Loader />
             ) : isReady ? (
                 <SiteWrapper>
-                    <Nav />
-                    <TopBar>
-                        <SignOutButton onClick={onSignOut}>Logout</SignOutButton>
-                    </TopBar>
-                    {props.children}
+                    <ScrollToTop pathName={path}>
+                        <Nav />
+                        <TopBar>
+                            <SignOutButton onClick={onSignOut}>Logout</SignOutButton>
+                        </TopBar>
+                        {props.children}
+                    </ScrollToTop>
                 </SiteWrapper>
             ) : (
                 <LoginScreen />
