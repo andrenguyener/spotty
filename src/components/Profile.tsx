@@ -185,20 +185,8 @@ const User: React.FC = () => {
     }, []);
 
     const getData = async () => {
-        const {
-            _user,
-            _followedArtists,
-            _playlists,
-            _topArtists,
-            _topTracks,
-        } = await getUserInfo();
-        setState({
-            user: _user,
-            followedArtists: _followedArtists,
-            playlists: _playlists,
-            topArtists: _topArtists,
-            topTracks: _topTracks,
-        });
+        const data = await getUserInfo();
+        setState(data);
     };
 
     const { user, followedArtists, playlists, topArtists, topTracks } = state;
