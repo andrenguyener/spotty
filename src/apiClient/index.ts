@@ -261,3 +261,16 @@ export const getUserInfo = async () => {
         topTracks: topTracks.data,
     };
 };
+
+export const getTrackInfo = async (trackId: string) => {
+    const [track, audioAnalysis, audioFeatures] = await Promise.all([
+        getTrack(trackId),
+        getTrackAudioAnalysis(trackId),
+        getTrackAudioFeatures(trackId),
+    ]);
+    return {
+        track: track.data,
+        audioAnalysis: audioAnalysis.data,
+        audioFeatures: audioFeatures.data,
+    };
+};
