@@ -72,7 +72,7 @@ const Mask = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    border-radius: 100%;
+    border-radius: 10px;
     font-size: 20px;
     color: ${colors.white};
     opacity: 0;
@@ -101,7 +101,7 @@ const ArtistArtwork = styled.a`
         }
     }
     img {
-        border-radius: 100%;
+        border-radius: 10px;
         object-fit: cover;
         width: 200px;
         height: 200px;

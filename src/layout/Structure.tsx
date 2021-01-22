@@ -1,4 +1,4 @@
-import { signOut, useSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import { Loader, ScrollToTop } from "./../components";
 import { useDelayedRender } from "./../utils";
 import { LoginScreen } from "./../views";
 import Nav from "./Nav";
+import TopBar from "./TopBar";
 
 const StructureContainer = styled.div`
     height: 100%;
@@ -17,27 +18,12 @@ const StructureContainer = styled.div`
 `;
 
 const SiteWrapper = styled.div`
+    position: relative;
     padding-left: ${theme.navWidth};
     ${media.tablet`
     padding-left: 0;
     padding-bottom: 50px;
   `};
-`;
-
-const TopBar = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin: 1rem 2rem;
-`;
-
-const SignOutButton = styled.div`
-    display: inline-block;
-    padding: 1rem 1.5rem;
-    color: ${theme.colors.lightGrey};
-
-    &:hover {
-        cursor: pointer;
-    }
 `;
 
 const Structure: React.FC = (props) => {
@@ -55,11 +41,6 @@ const Structure: React.FC = (props) => {
         }
     }, [session]);
 
-    const onSignOut = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        e.preventDefault();
-        signOut();
-    };
-
     return (
         <StructureContainer>
             <GlobalStyle />
@@ -69,9 +50,7 @@ const Structure: React.FC = (props) => {
                 <SiteWrapper>
                     <ScrollToTop pathName={path}>
                         <Nav />
-                        <TopBar>
-                            <SignOutButton onClick={onSignOut}>Logout</SignOutButton>
-                        </TopBar>
+                        <TopBar />
                         {props.children}
                     </ScrollToTop>
                 </SiteWrapper>

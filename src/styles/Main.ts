@@ -9,8 +9,10 @@ const Main = styled.main`
     min-height: 100vh;
     padding: 40px 80px 80px 80px;
     background-color: ${theme.colors.lightBlack};
+    padding-top: 100px;
     ${media.desktop`
     padding: 60px 50px;
+    padding-top: 100px;
   `};
     ${media.tablet`
     padding: 50px 40px;

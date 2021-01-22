@@ -1,5 +1,5 @@
 import { rgba } from "polished";
-import { css } from "styled-components";
+import { css, keyframes } from "styled-components";
 import theme from "./theme";
 const { colors, fontSizes } = theme;
 
@@ -104,6 +104,62 @@ const mixins = {
             outline: 0;
         }
     `,
+    keyframes: {
+        stroke: keyframes`
+          52% {
+              transform: rotate(-180deg);
+              stroke-dashoffset: 0;
+          }
+          52.1% {
+              transform: rotate(-360deg);
+              stroke-dashoffset: 0;
+          }
+          100% {
+              transform: rotate(-180deg);
+              stroke-dashoffset: 126;
+          }
+        `,
+        arrow: keyframes`
+          0%,
+          100% {
+              transform: translateX(0);
+              opacity: 1;
+          }
+          23% {
+              transform: translateX(17px);
+              opacity: 1;
+          }
+          24%,
+          80% {
+              transform: translateX(-22px);
+              opacity: 0;
+          }
+          81% {
+              opacity: 1;
+              transform: translateX(-22px);
+          }
+      `,
+        arrowUp: keyframes`
+       0%,
+        100% {
+            transform: rotate(-40deg) scaleX(1);
+        }
+        20%,
+        80% {
+            transform: rotate(0deg) scaleX(0.1);
+        }
+      `,
+        arrowDown: keyframes`
+         0%,
+        100% {
+            transform: rotate(40deg) scaleX(1);
+        }
+        20%,
+        80% {
+            transform: rotate(0deg) scaleX(0.1);
+        }
+      `,
+    },
 };
 
 export default mixins;

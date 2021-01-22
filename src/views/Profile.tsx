@@ -30,7 +30,7 @@ const Avatar = styled.div`
     width: 150px;
     height: 150px;
     img {
-        border-radius: 100%;
+        border-radius: 10px;
     }
 `;
 const NoAvatar = styled.div`

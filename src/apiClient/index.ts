@@ -90,6 +90,17 @@ export const getArtist = (
     axios.get(`https://api.spotify.com/v1/artists/${artistId}`, { headers: headers() });
 
 /**
+ * Get an Artist’s Top Tracks
+ * https://developer.spotify.com/web-api/get-artists-top-tracks/
+ */
+export const getArtistTopTracks = (
+    artistId: string
+): Promise<AxiosResponse<SpotifyApi.ArtistsTopTracksResponse>> =>
+    axios.get(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=US`, {
+        headers: headers(),
+    });
+
+/**
  * Follow an Artist
  * https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
  */

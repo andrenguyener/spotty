@@ -1,25 +1,42 @@
+import { rgba } from "polished";
 import React from "react";
 import styled from "styled-components";
 
-import { doesUserFollowArtist, followArtist, getArtist } from "../apiClient";
+import { doesUserFollowArtist, followArtist, getArtist, getArtistTopTracks } from "../apiClient";
 import { catchErrors, formatWithCommas } from "../utils";
-import { Loader } from "./../components";
+import { Loader, TrackItem } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
 const { colors, fontSizes, spacing } = theme;
 
-const ArtistContainer = styled(Main)`
-    ${mixins.flexCenter};
-    flex-direction: column;
-    height: 100%;
+const ArtistContainer = styled.div`
+    display: flex;
+    ${media.tablet`
+    display: block;
+  `};
+`;
+const Left = styled.div`
+    width: 30%;
     text-align: center;
+    min-width: 200px;
+    ${media.tablet`
+    width: 100%;
+    min-width: auto;
+  `};
+`;
+const Right = styled.div`
+    flex-grow: 1;
+    margin-left: 50px;
+    ${media.tablet`
+    margin: 50px 0 0;
+  `};
 `;
 const Artwork = styled.div`
     ${mixins.coverShadow};
     border-radius: 100%;
     img {
         object-fit: cover;
-        border-radius: 100%;
+        border-radius: 10px;
         width: 300px;
         height: 300px;
         ${media.tablet`
@@ -28,12 +45,10 @@ const Artwork = styled.div`
     `};
     }
 `;
-const ArtistName = styled.h1`
-    font-size: 70px;
-    margin-top: ${spacing.md};
-    ${media.tablet`
-    font-size: 7vw;
-  `};
+const ArtistName = styled.h3`
+    font-weight: 700;
+    font-size: ${fontSizes.xl};
+    margin-top: 20px;
 `;
 const Stats = styled.div`
     display: grid;
@@ -44,7 +59,7 @@ const Stats = styled.div`
 `;
 const Stat = styled.div``;
 const NumberDiv = styled.div`
-    color: ${colors.blue};
+    color: ${colors.white};
     font-weight: 700;
     font-size: ${fontSizes.lg};
     text-transform: capitalize;
@@ -73,11 +88,17 @@ const FollowButton = styled.button<{ isFollowing: boolean }>`
     &:hover,
     &:focus {
         background-color: ${(props) => (props.isFollowing ? "transparent" : colors.blue)};
+        ${(props) =>
+            !props.isFollowing && `box-shadow: 0.1em 0.1em 1em ${rgba(colors.blue, 0.5)};`};
+        color: white;
     }
 `;
 
 const Artist: React.FC<{ artistId: string }> = (props) => {
     const [artist, setArtist] = React.useState<SpotifyApi.SingleArtistResponse | null>(null);
+    const [topTracks, setTopTracks] = React.useState<SpotifyApi.ArtistsTopTracksResponse | null>(
+        null
+    );
     const [isFollowing, setIsFollowing] = React.useState<boolean | null>(null);
 
     React.useEffect(() => {
@@ -89,6 +110,11 @@ const Artist: React.FC<{ artistId: string }> = (props) => {
         const { artistId } = props;
         const { data } = await getArtist(artistId);
         setArtist(data);
+
+        if (data) {
+            const topTracksRes = await getArtistTopTracks(artistId);
+            setTopTracks(topTracksRes.data);
+        }
     };
 
     const isFollowingFunc = async () => {
@@ -106,39 +132,52 @@ const Artist: React.FC<{ artistId: string }> = (props) => {
     return (
         <React.Fragment>
             {artist ? (
-                <ArtistContainer>
-                    <Artwork>
-                        <img src={artist.images[0].url} alt="Artist Artwork" />
-                    </Artwork>
-                    <div>
-                        <ArtistName>{artist.name}</ArtistName>
-                        <Stats>
-                            <Stat>
-                                <NumberDiv>{formatWithCommas(artist.followers.total)}</NumberDiv>
-                                <NumLabel>Followers</NumLabel>
-                            </Stat>
-                            {artist.genres && (
-                                <Stat>
-                                    <NumberDiv>
-                                        {artist.genres.map((genre) => (
-                                            <Genre key={genre}>{genre}</Genre>
-                                        ))}
-                                    </NumberDiv>
-                                    <NumLabel>Genres</NumLabel>
-                                </Stat>
-                            )}
-                            {artist.popularity && (
-                                <Stat>
-                                    <NumberDiv>{artist.popularity}%</NumberDiv>
-                                    <NumLabel>Popularity</NumLabel>
-                                </Stat>
-                            )}
-                        </Stats>
-                    </div>
-                    <FollowButton isFollowing={!!isFollowing} onClick={catchErrors(follow)}>
-                        {isFollowing ? "Following" : "Follow"}
-                    </FollowButton>
-                </ArtistContainer>
+                <Main>
+                    <ArtistContainer>
+                        <Left>
+                            <Artwork>
+                                <img src={artist.images[0].url} alt="Artist Artwork" />
+                            </Artwork>
+                            <div>
+                                <ArtistName>{artist.name}</ArtistName>
+                                <Stats>
+                                    <Stat>
+                                        <NumLabel>Followers</NumLabel>
+                                        <NumberDiv>
+                                            {formatWithCommas(artist.followers.total)}
+                                        </NumberDiv>
+                                    </Stat>
+                                    {artist.genres && (
+                                        <Stat>
+                                            <NumLabel>Genres</NumLabel>
+                                            <NumberDiv>
+                                                {artist.genres.map((genre) => (
+                                                    <Genre key={genre}>{genre}</Genre>
+                                                ))}
+                                            </NumberDiv>
+                                        </Stat>
+                                    )}
+                                    {artist.popularity && (
+                                        <Stat>
+                                            <NumLabel>Popularity</NumLabel>
+                                            <NumberDiv>{artist.popularity}%</NumberDiv>
+                                        </Stat>
+                                    )}
+                                </Stats>
+                            </div>
+                            <FollowButton isFollowing={!!isFollowing} onClick={catchErrors(follow)}>
+                                {isFollowing ? "Following" : "Follow"}
+                            </FollowButton>
+                        </Left>
+                        <Right>
+                            <ul>
+                                {topTracks?.tracks?.map((track, i) => (
+                                    <TrackItem track={track} key={i} />
+                                ))}
+                            </ul>
+                        </Right>
+                    </ArtistContainer>
+                </Main>
             ) : (
                 <Loader />
             )}

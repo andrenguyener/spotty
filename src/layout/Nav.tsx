@@ -20,6 +20,7 @@ const Container = styled.nav`
     left: 0;
     width: ${theme.navWidth};
     background-color: ${colors.navBlack};
+    border-right: 1px solid #2a2b31;
     text-align: center;
     z-index: 99;
     ${media.tablet`
