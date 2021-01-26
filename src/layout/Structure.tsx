@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import React from "react";
+import { AudioPlayerProvider } from "react-use-audio-player";
 import styled from "styled-components";
 
 import { GlobalStyle, media, theme } from "../styles";
@@ -48,11 +49,13 @@ const Structure: React.FC = (props) => {
                 <Loader />
             ) : isReady ? (
                 <SiteWrapper>
-                    <ScrollToTop pathName={path}>
-                        <Nav />
-                        <TopBar />
-                        {props.children}
-                    </ScrollToTop>
+                    <AudioPlayerProvider>
+                        <ScrollToTop pathName={path}>
+                            <Nav />
+                            <TopBar />
+                            {props.children}
+                        </ScrollToTop>
+                    </AudioPlayerProvider>
                 </SiteWrapper>
             ) : (
                 <LoginScreen />
