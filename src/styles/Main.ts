@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import media from "./media";
-import theme from "./theme";
 
 const Main = styled.main`
     width: 100%;
@@ -8,7 +7,6 @@ const Main = styled.main`
     max-width: 1400px;
     min-height: 100vh;
     padding: 40px 80px 80px 80px;
-    background-color: ${theme.colors.lightBlack};
     padding-top: 100px;
     ${media.desktop`
     padding: 60px 50px;

@@ -6,11 +6,13 @@ import styled from "styled-components";
 
 import { GlobalStyle, media, theme } from "../styles";
 import { setToken } from "./../apiClient";
-import { Loader, ScrollToTop } from "./../components";
+import { AudioPlayer, Loader, ScrollToTop } from "./../components";
 import { TrackContextProvider, useDelayedRender } from "./../utils";
 import { LoginScreen } from "./../views";
 import Nav from "./Nav";
 import TopBar from "./TopBar";
+
+const { AudioVisualizer, Player } = AudioPlayer;
 
 const StructureContainer = styled.div`
     height: 100%;
@@ -21,10 +23,20 @@ const StructureContainer = styled.div`
 const SiteWrapper = styled.div`
     position: relative;
     padding-left: ${theme.navWidth};
+
     ${media.tablet`
-    padding-left: 0;
-    padding-bottom: 50px;
+        padding-left: 0;
+        padding-bottom: 50px;
   `};
+`;
+
+const AudioVisualizerContainer = styled.div`
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - ${theme.navWidth});
+    opacity: 0.7;
+    overflow: visible;
+    z-index: -1;
 `;
 
 const Structure: React.FC = (props) => {
@@ -54,6 +66,10 @@ const Structure: React.FC = (props) => {
                             <ScrollToTop pathName={path}>
                                 <Nav />
                                 <TopBar />
+                                <Player />
+                                <AudioVisualizerContainer>
+                                    <AudioVisualizer />
+                                </AudioVisualizerContainer>
                                 {props.children}
                             </ScrollToTop>
                         </TrackContextProvider>

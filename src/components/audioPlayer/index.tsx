@@ -1,15 +1,11 @@
-import React from "react";
-
-import Visualizer from "./audioVisualizer";
+import AudioVisualizer from "./audioVisualizer";
 import Player from "./player";
+import Wave from "./wave";
 
-const AudioPlayer = () => {
-    return (
-        <>
-            <Visualizer />
-            <Player />
-        </>
-    );
+export { AudioVisualizer, Player, Wave };
+
+export default {
+    AudioVisualizer,
+    Player,
+    Wave,
 };
-
-export default AudioPlayer;

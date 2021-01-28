@@ -3,7 +3,10 @@ import React from "react";
 import { useAudioPlayer } from "react-use-audio-player";
 import SiriWave from "siriwave";
 
+import { theme } from "./../../styles";
 import Wave from "./wave";
+
+const { colors } = theme;
 
 let taskHandle: number | undefined = 0;
 
@@ -72,7 +75,7 @@ const AudioVisualizer = () => {
 
         const waveForm = new Uint8Array(analyser.frequencyBinCount);
 
-        const updateAnimation = (timestamp: number) => {
+        const updateAnimation = (_timestamp: number) => {
             taskHandle = undefined;
             // copy frequency data to spectrum from analyser.
             // holds Number.NEGATIVE_INFINITY, [0 = -100dB, ..., 255 = -30 dB]
@@ -81,22 +84,22 @@ const AudioVisualizer = () => {
                 dBASpectrum[idx] = uint8TodB(byteLevel) + weightings[idx];
             });
 
-            const highestPerceptibleFrequencyBin = dBASpectrum.reduce(
-                (acc, y, idx) => (y > -90 ? idx : acc),
-                0
-            );
+            // const highestPerceptibleFrequencyBin = dBASpectrum.reduce(
+            //     (acc, y, idx) => (y > -90 ? idx : acc),
+            //     0
+            // );
             // S = ∑ s_i
-            const totaldBAPower = dBASpectrum.reduce((acc, y) => acc + y);
+            // const totaldBAPower = dBASpectrum.reduce((acc, y) => acc + y);
             // s⍉ = ∑ s_i ∙ i / ∑ s_i
-            const meanFrequencyBin =
-                dBASpectrum.reduce((acc, y, idx) => acc + y * idx) / totaldBAPower;
+            // const meanFrequencyBin =
+            //     dBASpectrum.reduce((acc, y, idx) => acc + y * idx) / totaldBAPower;
             const highestPowerBin = dBASpectrum.reduce(
                 ([maxPower, iMax], y, idx) => (y > maxPower ? [y, idx] : [maxPower, iMax]),
                 [-120, 0]
             )[1];
-            const highestDetectedFrequency =
-                highestPerceptibleFrequencyBin * (sampleRate / 2 / analyser.frequencyBinCount);
-            const meanFrequency = meanFrequencyBin * (sampleRate / 2 / analyser.frequencyBinCount);
+            // const highestDetectedFrequency =
+            //     highestPerceptibleFrequencyBin * (sampleRate / 2 / analyser.frequencyBinCount);
+            // const meanFrequency = meanFrequencyBin * (sampleRate / 2 / analyser.frequencyBinCount);
             const maxPowerFrequency =
                 highestPowerBin * (sampleRate / 2 / analyser.frequencyBinCount);
 
@@ -104,7 +107,7 @@ const AudioVisualizer = () => {
             // scaled to [0..22kHz] -> [0..1]
             setSpeed(maxPowerFrequency / 10e3);
 
-            const averagedBAPower = totaldBAPower / analyser.frequencyBinCount;
+            // const averagedBAPower = totaldBAPower / analyser.frequencyBinCount;
 
             // for fun use raf to update the screen
             // requestAnimationFrame(() => {
@@ -131,7 +134,8 @@ const AudioVisualizer = () => {
             // Set this for style ios0
             // siriWave.setAmplitude(amplitude / 128 * 10);
             // Set this for style ios
-            setAmplitude((amplitudeValue / 128) * 3);
+            const amp = Math.min((amplitudeValue / 128) * 3, 1.5);
+            setAmplitude(amp);
 
             if (!taskHandle) {
                 taskHandle = requestAnimationFrame(updateAnimation);
@@ -141,15 +145,7 @@ const AudioVisualizer = () => {
         taskHandle = requestAnimationFrame(updateAnimation);
     };
 
-    // if (!ready) {
-    //     return <Loader />;
-    // }
-
-    return (
-        <>
-            <Wave ref={waveRef} amplitude={amplitude} speed={speed} />
-        </>
-    );
+    return <Wave ref={waveRef} amplitude={amplitude} speed={speed} color={colors.lightBlue} />;
 };
 
 export default AudioVisualizer;

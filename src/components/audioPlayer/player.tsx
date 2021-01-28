@@ -4,12 +4,11 @@ import { useAudioPlayer, useAudioPosition } from "react-use-audio-player";
 import styled from "styled-components";
 
 import { media, mixins, theme } from "../../styles";
-import { Icons } from "./../";
 import { TrackContext } from "./../../utils";
+import { IconPlayer } from "./../icons";
 
 const { colors } = theme;
 
-const { IconPlayer } = Icons;
 const { Next, Pause, Play, Previous } = IconPlayer;
 
 const MusicPlayer = styled.div`
@@ -328,81 +327,60 @@ const formatTime = (seconds: number) => {
 };
 
 const Player = () => {
-    const { togglePlayPause, playing, load } = useAudioPlayer();
+    const { togglePlayPause, playing } = useAudioPlayer();
     const { duration, position, percentComplete } = useAudioPosition({ highRefreshRate: true });
 
-    const { trackInfo, setTrackInfo } = React.useContext(TrackContext);
+    const { trackInfo } = React.useContext(TrackContext);
 
     const onPausePlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         togglePlayPause();
     };
 
-    const onClick = (e: any) => {
-        e.preventDefault();
-        setTrackInfo({
-            src: "/song.mp3",
-            name: "Song 1",
-            artist: "Woof",
-        });
-        load({ src: "/song.mp3", autoplay: true });
-    };
-
-    const onClick2 = (e: any) => {
-        e.preventDefault();
-        setTrackInfo({
-            src: "/song2.mp3",
-            name: "Song 2",
-            artist: "Meow",
-        });
-        load({ src: "/song2.mp3", autoplay: true });
-    };
-
     const elapsed = typeof position === "number" ? position : 0;
 
     return (
         <Container>
-            <button onClick={onClick}>CLICK ME Dog</button>
-            <button onClick={onClick2}>CLICK ME Cat</button>
-            <h1>{JSON.stringify(trackInfo)}</h1>
-            <MusicPlayer>
-                <PlayerMain>
-                    <PlayerControls>
-                        <PreviousButton>
-                            <Previous />
-                        </PreviousButton>
-                        <PauseButton onClick={onPausePlayClick}>
-                            {playing ? <Pause /> : <Play />}
-                        </PauseButton>
-                        <NextButton>
-                            <Next />
-                        </NextButton>
-                    </PlayerControls>
-                    <MainCurrent>
-                        <CurrentKeyVisual imageUrl={trackInfo.artworkSrc || ""}>
-                            <img src={trackInfo.artworkSrc} alt="album-art" />
-                        </CurrentKeyVisual>
+            {trackInfo.src && (
+                <MusicPlayer>
+                    <PlayerMain>
+                        <PlayerControls>
+                            <PreviousButton>
+                                <Previous />
+                            </PreviousButton>
+                            <PauseButton onClick={onPausePlayClick}>
+                                {playing ? <Pause /> : <Play />}
+                            </PauseButton>
+                            <NextButton>
+                                <Next />
+                            </NextButton>
+                        </PlayerControls>
+                        <MainCurrent>
+                            <CurrentKeyVisual imageUrl={trackInfo.artworkSrc || ""}>
+                                <img src={trackInfo.artworkSrc} alt="album-art" />
+                            </CurrentKeyVisual>
 
-                        <CurrentInfo>
-                            <h1>{trackInfo.name}</h1>
-                            <p>{trackInfo.artist}</p>
-                        </CurrentInfo>
-                    </MainCurrent>
+                            <CurrentInfo>
+                                <h1>{trackInfo.name}</h1>
+                                <p>{trackInfo.artist}</p>
+                            </CurrentInfo>
+                        </MainCurrent>
 
-                    <MainControl>
-                        <TimelineButton>
-                            <span className="current-time">{formatTime(elapsed)}</span>
-                            <Timescope>
-                                <TimescopeBefore />
-                                <TimescopeDot style={{ left: `${percentComplete}%` }} />
-                                <TimescopeAfter style={{ width: `${percentComplete}%` }} />
-                            </Timescope>
+                        <MainControl>
+                            <TimelineButton>
+                                <span className="current-time">{formatTime(elapsed)}</span>
+                                <Timescope>
+                                    <TimescopeBefore />
+                                    <TimescopeDot style={{ left: `${percentComplete}%` }} />
+                                    <TimescopeAfter style={{ width: `${percentComplete}%` }} />
+                                </Timescope>
 
-                            <span className="end-time">{formatTime(duration)}</span>
-                        </TimelineButton>
-                    </MainControl>
-                </PlayerMain>
-            </MusicPlayer>
+                                <span className="end-time">{formatTime(duration)}</span>
+                            </TimelineButton>
+                        </MainControl>
+                    </PlayerMain>
+                </MusicPlayer>
+            )}
         </Container>
     );
 };

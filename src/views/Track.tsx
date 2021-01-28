@@ -1,8 +1,9 @@
 import React from "react";
+import { useAudioPlayer } from "react-use-audio-player";
 import styled from "styled-components";
 
 import { getTrackInfo } from "../apiClient";
-import { catchErrors, formatDuration, getYear, parsePitchClass } from "../utils";
+import { catchErrors, formatDuration, getYear, parsePitchClass, TrackContext } from "../utils";
 import { FeatureChart, Loader } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
@@ -36,9 +37,13 @@ const Info = styled.div`
     margin-top: 30px;
   `};
 `;
-const PlayTrackButton = styled.a`
+const PlayTrackButton = styled.button<{ isPlaying: boolean }>`
     margin-top: 12px;
     ${mixins.button};
+
+    border: 1px solid ${(props) => (props.isPlaying ? "white" : "transparent")};
+    pointer-events: ${(props) => (props.isPlaying ? "none" : "auto")};
+    cursor: ${(props) => (props.isPlaying ? "default" : "pointer")};
 `;
 const Title = styled.h1`
     font-size: 42px;
@@ -122,6 +127,8 @@ const Track: React.FC<{ trackId: string }> = (props) => {
         audioAnalysis: null,
         audioFeatures: null,
     });
+    const { load } = useAudioPlayer();
+    const { trackInfo: info, setTrackInfo: setInfo } = React.useContext(TrackContext);
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -131,6 +138,27 @@ const Track: React.FC<{ trackId: string }> = (props) => {
         const { trackId } = props;
         const data = await getTrackInfo(trackId);
         setTrackInfo(data);
+    };
+
+    const onPlayClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        if (trackInfo.track) {
+            setInfo({
+                artist: trackInfo.track.artists.map((artist) => artist.name).join(", "),
+                artworkSrc: trackInfo.track.album.images?.[0]?.url,
+                name: trackInfo.track.name,
+                src: trackInfo.track.preview_url,
+            });
+            load({
+                src: trackInfo.track.preview_url || undefined,
+                format: ["mp3"],
+                autoplay: true,
+            });
+        }
+    };
+
+    const isPlaying = () => {
+        return !!(info.src && info?.src === trackInfo?.track?.preview_url);
     };
 
     const { track, audioAnalysis, audioFeatures } = trackInfo;
@@ -168,12 +196,8 @@ const Track: React.FC<{ trackId: string }> = (props) => {
                                 </a>{" "}
                                 &middot; {getYear(track.album.release_date)}
                             </Album>
-                            <PlayTrackButton
-                                href={track.external_urls.spotify}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Play on Spotify
+                            <PlayTrackButton onClick={onPlayClick} isPlaying={isPlaying()}>
+                                {isPlaying() ? "Playing" : "Play"}
                             </PlayTrackButton>
                         </Info>
                     </TrackContainer>

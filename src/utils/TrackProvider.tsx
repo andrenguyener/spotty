@@ -3,7 +3,7 @@ import React from "react";
 type TrackInfo = {
     name?: string;
     artist?: string;
-    src?: string;
+    src?: string | null;
     artworkSrc?: string;
 };
 
