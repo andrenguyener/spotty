@@ -13,6 +13,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <>
             <GoogleFonts href="https://fonts.googleapis.com/css2?family=Rosario:wght@300&family=Space+Mono&display=swap" />
             <GoogleFonts href="https://fonts.googleapis.com/css2?family=Darker+Grotesque&display=swap" />
+            <GoogleFonts href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&display=swap" />
             <Head>
                 {/* tslint:disable-next-line:react-a11y-titles */}
                 <title>spotty</title>

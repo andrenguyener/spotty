@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { GlobalStyle, media, theme } from "../styles";
 import { setToken } from "./../apiClient";
 import { Loader, ScrollToTop } from "./../components";
-import { useDelayedRender } from "./../utils";
+import { TrackContextProvider, useDelayedRender } from "./../utils";
 import { LoginScreen } from "./../views";
 import Nav from "./Nav";
 import TopBar from "./TopBar";
@@ -50,11 +50,13 @@ const Structure: React.FC = (props) => {
             ) : isReady ? (
                 <SiteWrapper>
                     <AudioPlayerProvider>
-                        <ScrollToTop pathName={path}>
-                            <Nav />
-                            <TopBar />
-                            {props.children}
-                        </ScrollToTop>
+                        <TrackContextProvider>
+                            <ScrollToTop pathName={path}>
+                                <Nav />
+                                <TopBar />
+                                {props.children}
+                            </ScrollToTop>
+                        </TrackContextProvider>
                     </AudioPlayerProvider>
                 </SiteWrapper>
             ) : (

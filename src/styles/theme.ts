@@ -17,6 +17,7 @@ const theme = {
 
     fonts: {
         primary: "Darker Grotesque, Rosario, monospace",
+        mono: "Fira Code",
     },
 
     fontSizes: {

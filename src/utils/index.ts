@@ -1,5 +1,7 @@
 import React from "react";
 
+export * from "./TrackProvider";
+
 export const config = {
     EXPIRATION_TIME: (3600 * 1000) / 2, // 3600 seconds * 1000 = 1 hour in milliseconds = 30min
     KEEP_ALIVE: 60 * 30, // 30min
