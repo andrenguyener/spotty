@@ -1,9 +1,10 @@
 import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
+import { rgba } from "polished";
 import React from "react";
 import styled, { css } from "styled-components";
 
-import { media, theme } from "../styles";
+import { media, mixins, theme } from "../styles";
 
 const TopBarContainer = styled.div<{ isTop: boolean }>`
     display: flex;
@@ -20,9 +21,9 @@ const TopBarContainer = styled.div<{ isTop: boolean }>`
         const _css = [];
         if (!props.isTop) {
             _css.push(css`
-                background-color: ${theme.colors.black};
+                ${mixins.coverShadow};
+                background-color: ${rgba(theme.colors.navBlack, 0.7)};
                 border-bottom: 1px solid #2a2b31;
-                opacity: 0.75;
             `);
         }
         return _css;

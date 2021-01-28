@@ -30,15 +30,6 @@ const SiteWrapper = styled.div`
   `};
 `;
 
-const AudioVisualizerContainer = styled.div`
-    position: fixed;
-    bottom: 0;
-    width: calc(100% - ${theme.navWidth});
-    opacity: 0.7;
-    overflow: visible;
-    z-index: -1;
-`;
-
 const Structure: React.FC = (props) => {
     const [session, loading] = useSession();
     const delay = useDelayedRender(1500);
@@ -67,9 +58,7 @@ const Structure: React.FC = (props) => {
                                 <Nav />
                                 <TopBar />
                                 <Player />
-                                <AudioVisualizerContainer>
-                                    <AudioVisualizer />
-                                </AudioVisualizerContainer>
+                                <AudioVisualizer />
                                 {props.children}
                             </ScrollToTop>
                         </TrackContextProvider>

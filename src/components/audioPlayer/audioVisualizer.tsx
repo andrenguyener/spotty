@@ -2,6 +2,7 @@ import { Howler } from "howler";
 import React from "react";
 import { useAudioPlayer } from "react-use-audio-player";
 import SiriWave from "siriwave";
+import styled from "styled-components";
 
 import { theme } from "./../../styles";
 import Wave from "./wave";
@@ -145,7 +146,21 @@ const AudioVisualizer = () => {
         taskHandle = requestAnimationFrame(updateAnimation);
     };
 
-    return <Wave ref={waveRef} amplitude={amplitude} speed={speed} color={colors.lightBlue} />;
+    return (
+        <AudioVisualizerContainer playing={!!playing}>
+            <Wave ref={waveRef} amplitude={amplitude} speed={speed} color={colors.lightBlue} />
+        </AudioVisualizerContainer>
+    );
 };
+
+const AudioVisualizerContainer = styled.div<{ playing: boolean }>`
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - ${theme.navWidth});
+    opacity: ${(props) => (props.playing ? "0.7" : "0.2")};
+    overflow: visible;
+    transition: ${theme.transition};
+    z-index: -1;
+`;
 
 export default AudioVisualizer;
