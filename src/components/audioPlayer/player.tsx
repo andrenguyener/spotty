@@ -73,7 +73,7 @@ const CurrentKeyVisual = styled.div<{ imageUrl: string }>`
         height: 80%;
         background-image: ${(props) => `url(${props.imageUrl})`};
         background-size: cover;
-        filter: blur(35px);
+        filter: blur(6px);
     }
 `;
 
@@ -88,14 +88,14 @@ const CurrentInfo = styled.div`
     align-items: flex-start;
     width: 200px;
 
-    h1,
+    h2,
     p {
         padding: 0;
         margin: 0;
     }
 
-    h1 {
-        font-size: 20px;
+    h2 {
+        font-size: 15px;
         color: ${colors.lightestGrey};
     }
 
@@ -361,7 +361,7 @@ const Player = () => {
                             </CurrentKeyVisual>
 
                             <CurrentInfo>
-                                <h1>{trackInfo.name}</h1>
+                                <h2>{trackInfo.name}</h2>
                                 <p>{trackInfo.artist}</p>
                             </CurrentInfo>
                         </MainCurrent>
