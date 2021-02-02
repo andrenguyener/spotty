@@ -155,7 +155,7 @@ const ArtistArtwork = styled.div`
         min-width: 50px;
         height: 50px;
         margin-right: ${spacing.base};
-        border-radius: 5px;
+        /* border-radius: 5px; */
     }
 `;
 

@@ -22,7 +22,8 @@ const TopBarContainer = styled.div<{ isTop: boolean }>`
         if (!props.isTop) {
             _css.push(css`
                 ${mixins.coverShadow};
-                background-color: ${rgba(theme.colors.navBlack, 0.7)};
+                background-color: ${rgba(theme.colors.navBlack, 0.85)};
+                backdrop-filter: blur(2px);
                 border-bottom: 1px solid #2a2b31;
             `);
         }

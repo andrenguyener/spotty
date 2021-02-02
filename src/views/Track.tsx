@@ -70,13 +70,15 @@ const Album = styled.h3`
 `;
 const AudioFeatures = styled.div`
     ${mixins.flexCenter};
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 const Features = styled.div`
     display: grid;
     grid-template-columns: repeat(5, minmax(100px, 1fr));
-    width: 100%;
+    /* width: 50%; */
     margin-bottom: 50px;
+    margin-right: 50px;
     text-align: center;
     border-top: 1px solid ${colors.grey};
     border-left: 1px solid ${colors.grey};
@@ -203,72 +205,76 @@ const Track: React.FC<{ trackId: string }> = (props) => {
                     </TrackContainer>
 
                     {audioFeatures && audioAnalysis && (
-                        <AudioFeatures>
-                            <Features>
-                                <Feature>
-                                    <FeatureText>
-                                        {formatDuration(audioFeatures.duration_ms)}
-                                    </FeatureText>
-                                    <FeatureLabel>Duration</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>{parsePitchClass(audioFeatures.key)}</FeatureText>
-                                    <FeatureLabel>Key</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>
-                                        {audioFeatures.mode === 1 ? "Major" : "Minor"}
-                                    </FeatureText>
-                                    <FeatureLabel>Modality</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>{audioFeatures.time_signature}</FeatureText>
-                                    <FeatureLabel>Time Signature</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>{Math.round(audioFeatures.tempo)}</FeatureText>
-                                    <FeatureLabel>Tempo (BPM)</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>{track.popularity}%</FeatureText>
-                                    <FeatureLabel>Popularity</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>
-                                        {(audioAnalysis as any)?.bars?.length}
-                                    </FeatureText>
-                                    <FeatureLabel>Bars</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>
-                                        {(audioAnalysis as any)?.beats?.length}
-                                    </FeatureText>
-                                    <FeatureLabel>Beats</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>
-                                        {(audioAnalysis as any)?.sections?.length}
-                                    </FeatureText>
-                                    <FeatureLabel>Sections</FeatureLabel>
-                                </Feature>
-                                <Feature>
-                                    <FeatureText>
-                                        {(audioAnalysis as any)?.segments?.length}
-                                    </FeatureText>
-                                    <FeatureLabel>Segments</FeatureLabel>
-                                </Feature>
-                            </Features>
-
-                            <FeatureChart features={audioFeatures} type="" />
-
-                            <DescriptionLink
-                                href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Full Description of Audio Features
-                            </DescriptionLink>
-                        </AudioFeatures>
+                        <>
+                            <AudioFeatures>
+                                <Features>
+                                    <Feature>
+                                        <FeatureText>
+                                            {formatDuration(audioFeatures.duration_ms)}
+                                        </FeatureText>
+                                        <FeatureLabel>Duration</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>
+                                            {parsePitchClass(audioFeatures.key)}
+                                        </FeatureText>
+                                        <FeatureLabel>Key</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>
+                                            {audioFeatures.mode === 1 ? "Major" : "Minor"}
+                                        </FeatureText>
+                                        <FeatureLabel>Modality</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>{audioFeatures.time_signature}</FeatureText>
+                                        <FeatureLabel>Time Signature</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>{Math.round(audioFeatures.tempo)}</FeatureText>
+                                        <FeatureLabel>Tempo (BPM)</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>{track.popularity}%</FeatureText>
+                                        <FeatureLabel>Popularity</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>
+                                            {(audioAnalysis as any)?.bars?.length}
+                                        </FeatureText>
+                                        <FeatureLabel>Bars</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>
+                                            {(audioAnalysis as any)?.beats?.length}
+                                        </FeatureText>
+                                        <FeatureLabel>Beats</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>
+                                            {(audioAnalysis as any)?.sections?.length}
+                                        </FeatureText>
+                                        <FeatureLabel>Sections</FeatureLabel>
+                                    </Feature>
+                                    <Feature>
+                                        <FeatureText>
+                                            {(audioAnalysis as any)?.segments?.length}
+                                        </FeatureText>
+                                        <FeatureLabel>Segments</FeatureLabel>
+                                    </Feature>
+                                </Features>
+                                <div>
+                                    <FeatureChart features={audioFeatures} type="" />
+                                    <DescriptionLink
+                                        href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Full Description of Audio Features
+                                    </DescriptionLink>
+                                </div>
+                            </AudioFeatures>
+                        </>
                     )}
                 </Main>
             ) : (

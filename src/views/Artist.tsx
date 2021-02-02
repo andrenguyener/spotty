@@ -36,7 +36,7 @@ const Artwork = styled.div`
     border-radius: 100%;
     img {
         object-fit: cover;
-        border-radius: 10px;
+        /* border-radius: 10px; */
         width: 300px;
         height: 300px;
         ${media.tablet`

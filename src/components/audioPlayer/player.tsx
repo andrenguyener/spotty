@@ -29,7 +29,8 @@ const PlayerMain = styled.div`
     display: flex;
     align-items: center;
     padding: 10px;
-    background-color: ${rgba(colors.navBlack, 0.7)};
+    background-color: ${rgba(colors.navBlack, 0.85)};
+    backdrop-filter: blur(2px);
     border-top: 1px solid #2a2b31;
 
     ${media.tablet`

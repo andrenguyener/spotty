@@ -155,7 +155,7 @@ const AudioVisualizer = () => {
 
 const AudioVisualizerContainer = styled.div<{ playing: boolean }>`
     position: fixed;
-    bottom: 0;
+    bottom: -50px;
     width: calc(100% - ${theme.navWidth});
     opacity: ${(props) => (props.playing ? "0.7" : "0.2")};
     overflow: visible;
