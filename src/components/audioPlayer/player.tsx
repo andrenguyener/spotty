@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { rgba } from "polished";
 import React from "react";
 import { useAudioPlayer, useAudioPosition } from "react-use-audio-player";
@@ -99,6 +100,11 @@ const CurrentInfo = styled.div`
     h2 {
         font-size: 15px;
         color: ${colors.lightestGrey};
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
     p {
@@ -335,6 +341,7 @@ const formatTime = (seconds: number) => {
 const Player = () => {
     const { load, togglePlayPause, playing, volume } = useAudioPlayer();
     const { duration, position, percentComplete } = useAudioPosition({ highRefreshRate: true });
+    const router = useRouter();
 
     const { trackInfo, setTrackInfo, tracksList } = React.useContext(TrackContext);
 
@@ -395,6 +402,11 @@ const Player = () => {
         });
     };
 
+    const TrackNameClick = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+        e.preventDefault();
+        router.push(`/track/${trackInfo.id}`);
+    };
+
     const getVolume = (): number => (typeof volume() === "number" ? (volume() as number) : 0.5);
 
     const elapsed = typeof position === "number" ? position : 0;
@@ -422,7 +434,7 @@ const Player = () => {
                             </CurrentKeyVisual>
 
                             <CurrentInfo>
-                                <h2>{trackInfo.name}</h2>
+                                <h2 onClick={TrackNameClick}>{trackInfo.name}</h2>
                                 <p>{trackInfo.artist}</p>
                             </CurrentInfo>
                         </MainCurrent>
