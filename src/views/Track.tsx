@@ -130,7 +130,9 @@ const Track: React.FC<{ trackId: string }> = (props) => {
         audioFeatures: null,
     });
     const { load, volume } = useAudioPlayer();
-    const { trackInfo: info, setTrackInfo: setInfo } = React.useContext(TrackContext);
+    const { trackInfo: info, setTrackInfo: setInfo, setTracksList } = React.useContext(
+        TrackContext
+    );
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -150,6 +152,7 @@ const Track: React.FC<{ trackId: string }> = (props) => {
                 artworkSrc: trackInfo.track.album.images?.[0]?.url,
                 name: trackInfo.track.name,
                 src: trackInfo.track.preview_url,
+                id: trackInfo.track.id,
             });
             load({
                 src: trackInfo.track.preview_url || undefined,
@@ -157,6 +160,7 @@ const Track: React.FC<{ trackId: string }> = (props) => {
                 autoplay: true,
                 volume: getVolume(),
             });
+            setTracksList([]);
         }
     };
 

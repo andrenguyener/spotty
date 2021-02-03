@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { getRecentlyPlayed } from "../apiClient";
 import { Main } from "../styles";
-import { catchErrors } from "../utils";
+import { catchErrors, TrackContext } from "../utils";
 import { Loader, TrackItem } from "./../components";
 
 const TracksContainer = styled.ul`
@@ -15,6 +15,7 @@ const RecentlyPlayed = () => {
         recentlyPlayed,
         setRecentlyPlayed,
     ] = React.useState<SpotifyApi.UsersRecentlyPlayedTracksResponse | null>(null);
+    const { setTracksList } = React.useContext(TrackContext);
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -25,12 +26,19 @@ const RecentlyPlayed = () => {
         setRecentlyPlayed(data);
     };
 
+    const onTrackClick = () => {
+        const tracks = recentlyPlayed?.items.map((item) => item.track) ?? [];
+        setTracksList(tracks);
+    };
+
     return (
         <Main>
             <h2>Recently Played Tracks</h2>
             <TracksContainer>
                 {recentlyPlayed ? (
-                    recentlyPlayed.items.map(({ track }, i) => <TrackItem track={track} key={i} />)
+                    recentlyPlayed.items.map(({ track }, i) => (
+                        <TrackItem track={track} key={i} onClick={onTrackClick} />
+                    ))
                 ) : (
                     <Loader />
                 )}

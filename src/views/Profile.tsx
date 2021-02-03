@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
-import { catchErrors } from "../utils";
+import { catchErrors, TrackContext } from "../utils";
 import { getUserInfo } from "./../apiClient";
 import { IconInfo, IconUser } from "./../components/icons";
 import Loader from "./../components/Loader";
@@ -178,6 +178,7 @@ const User: React.FC = () => {
         topArtists?: SpotifyApi.UsersTopArtistsResponse;
         topTracks?: SpotifyApi.UsersTopTracksResponse;
     }>({});
+    const { setTracksList } = React.useContext(TrackContext);
     const router = useRouter();
 
     React.useEffect(() => {
@@ -200,6 +201,11 @@ const User: React.FC = () => {
     const onMoreTracksClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         router.push("/tracks");
+    };
+
+    const onTrackClick = () => {
+        const tracks = (topTracks?.items ?? []).slice(0, 10);
+        setTracksList(tracks);
     };
 
     return (
@@ -302,7 +308,13 @@ const User: React.FC = () => {
                                 {topTracks ? (
                                     topTracks.items
                                         .slice(0, 10)
-                                        .map((track, i) => <TrackItem track={track} key={i} />)
+                                        .map((track, i) => (
+                                            <TrackItem
+                                                track={track}
+                                                key={i}
+                                                onClick={onTrackClick}
+                                            />
+                                        ))
                                 ) : (
                                     <Loader />
                                 )}

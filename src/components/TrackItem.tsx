@@ -94,8 +94,10 @@ const isObjectFull = (
 
 const TrackItem = ({
     track,
+    onClick,
 }: {
     track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
+    onClick: () => void;
 }) => {
     const { load, playing, togglePlayPause, volume } = useAudioPlayer();
     const { trackInfo, setTrackInfo } = React.useContext(TrackContext);
@@ -112,6 +114,7 @@ const TrackItem = ({
                     artworkSrc: (track as SpotifyApi.TrackObjectFull)?.album?.images?.[0]?.url,
                     name: track.name,
                     src: track.preview_url,
+                    id: track.id,
                 });
                 load({
                     src: track.preview_url || undefined,
@@ -119,6 +122,7 @@ const TrackItem = ({
                     autoplay: true,
                     volume: getVolume(),
                 });
+                onClick();
             }
         }
     };

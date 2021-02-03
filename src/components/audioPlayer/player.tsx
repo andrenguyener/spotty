@@ -153,7 +153,7 @@ const ControlButton = styled.div`
     }
 `;
 
-const PreviousButton = styled(ControlButton)`
+const PreviousButton = styled(ControlButton)<{ disabled: boolean }>`
     margin-right: 17px;
     display: flex;
     align-items: center;
@@ -163,9 +163,11 @@ const PreviousButton = styled(ControlButton)`
         height: 80%;
 
         path {
-            fill: ${colors.white};
+            fill: ${(props) => (props.disabled ? colors.grey : colors.white)};
         }
     }
+
+    pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
 `;
 
 const PauseButton = styled(ControlButton)`
@@ -184,7 +186,7 @@ const PauseButton = styled(ControlButton)`
     }
 `;
 
-const NextButton = styled(ControlButton)`
+const NextButton = styled(ControlButton)<{ disabled: boolean }>`
     margin-right: 24px;
 
     display: flex;
@@ -195,9 +197,11 @@ const NextButton = styled(ControlButton)`
         height: 80%;
 
         path {
-            fill: ${colors.white};
+            fill: ${(props) => (props.disabled ? colors.grey : colors.white)};
         }
     }
+
+    pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
 `;
 
 const TimelineButton = styled(ControlButton)`
@@ -329,15 +333,69 @@ const formatTime = (seconds: number) => {
 };
 
 const Player = () => {
-    const { togglePlayPause, playing } = useAudioPlayer();
+    const { load, togglePlayPause, playing, volume } = useAudioPlayer();
     const { duration, position, percentComplete } = useAudioPosition({ highRefreshRate: true });
 
-    const { trackInfo } = React.useContext(TrackContext);
+    const { trackInfo, setTrackInfo, tracksList } = React.useContext(TrackContext);
 
     const onPausePlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         togglePlayPause();
     };
+
+    const currentTrackIndex = () => tracksList.findIndex((tl) => tl.id === trackInfo.id);
+
+    const prevTrack = () => {
+        const current = currentTrackIndex();
+        if (current < 0) {
+            return undefined;
+        }
+        return tracksList[current - 1];
+    };
+
+    const nextTrack = () => {
+        const current = currentTrackIndex();
+        if (current < 0) {
+            return undefined;
+        }
+        return tracksList[current + 1];
+    };
+
+    const onPrevClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.preventDefault();
+        const prev = prevTrack();
+
+        if (prev) {
+            setTrackState(prev);
+        }
+    };
+
+    const onNextClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.preventDefault();
+        const next = nextTrack();
+
+        if (next) {
+            setTrackState(next);
+        }
+    };
+
+    const setTrackState = (track: SpotifyApi.TrackObjectSimplified) => {
+        setTrackInfo({
+            artist: track.artists.map((artist) => artist.name).join(", "),
+            artworkSrc: (track as SpotifyApi.TrackObjectFull)?.album?.images?.[0]?.url,
+            name: track.name,
+            src: track.preview_url,
+            id: track.id,
+        });
+        load({
+            src: track.preview_url || undefined,
+            format: ["mp3"],
+            autoplay: true,
+            volume: getVolume(),
+        });
+    };
+
+    const getVolume = (): number => (typeof volume() === "number" ? (volume() as number) : 0.5);
 
     const elapsed = typeof position === "number" ? position : 0;
 
@@ -347,13 +405,13 @@ const Player = () => {
                 <MusicPlayer>
                     <PlayerMain>
                         <PlayerControls>
-                            <PreviousButton>
+                            <PreviousButton disabled={!prevTrack()} onClick={onPrevClick}>
                                 <Previous />
                             </PreviousButton>
                             <PauseButton onClick={onPausePlayClick}>
                                 {playing ? <Pause /> : <Play />}
                             </PauseButton>
-                            <NextButton>
+                            <NextButton disabled={!nextTrack()} onClick={onNextClick}>
                                 <Next />
                             </NextButton>
                         </PlayerControls>

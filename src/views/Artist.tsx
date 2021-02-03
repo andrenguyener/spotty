@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { doesUserFollowArtist, followArtist, getArtist, getArtistTopTracks } from "../apiClient";
-import { catchErrors, formatWithCommas } from "../utils";
+import { catchErrors, formatWithCommas, TrackContext } from "../utils";
 import { Loader, TrackItem } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
@@ -100,6 +100,7 @@ const Artist: React.FC<{ artistId: string }> = (props) => {
         null
     );
     const [isFollowing, setIsFollowing] = React.useState<boolean | null>(null);
+    const { setTracksList } = React.useContext(TrackContext);
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -127,6 +128,11 @@ const Artist: React.FC<{ artistId: string }> = (props) => {
         const { artistId } = props;
         await followArtist(artistId);
         isFollowingFunc();
+    };
+
+    const onTrackClick = () => {
+        const tracks = topTracks?.tracks ?? [];
+        setTracksList(tracks);
     };
 
     return (
@@ -172,7 +178,7 @@ const Artist: React.FC<{ artistId: string }> = (props) => {
                         <Right>
                             <ul>
                                 {topTracks?.tracks?.map((track, i) => (
-                                    <TrackItem track={track} key={i} />
+                                    <TrackItem track={track} key={i} onClick={onTrackClick} />
                                 ))}
                             </ul>
                         </Right>

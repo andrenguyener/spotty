@@ -11,7 +11,7 @@ import {
     getRecommendationsForTracks,
     getUser,
 } from "../apiClient";
-import { catchErrors } from "../utils";
+import { catchErrors, TrackContext } from "../utils";
 import { TrackItem } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
@@ -52,6 +52,7 @@ const Recommendations: React.FC<{ playlistId: string }> = (props) => {
     const [userId, setUserId] = React.useState<string | null>(null);
     const [recPlaylistId, setRecPlaylistId] = React.useState<string | null>(null);
     const [isFollowing, setIsFollowing] = React.useState(false);
+    const { setTracksList } = React.useContext(TrackContext);
 
     React.useEffect(() => {
         catchErrors(getData());
@@ -109,6 +110,11 @@ const Recommendations: React.FC<{ playlistId: string }> = (props) => {
         }
     };
 
+    const onTrackClick = () => {
+        const tracks = recommendations?.tracks ?? [];
+        setTracksList(tracks);
+    };
+
     return (
         <Main>
             {playlist && (
@@ -136,7 +142,9 @@ const Recommendations: React.FC<{ playlistId: string }> = (props) => {
             )}
             <TracksContainer>
                 {recommendations &&
-                    recommendations.tracks.map((track, i) => <TrackItem track={track} key={i} />)}
+                    recommendations.tracks.map((track, i) => (
+                        <TrackItem track={track} key={i} onClick={onTrackClick} />
+                    ))}
             </TracksContainer>
         </Main>
     );

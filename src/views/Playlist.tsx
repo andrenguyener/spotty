@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { getAudioFeaturesForTracks, getPlaylist } from "../apiClient";
-import { catchErrors } from "../utils";
+import { catchErrors, TrackContext } from "../utils";
 import { FeatureChart, Loader, TrackItem } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
@@ -73,7 +73,8 @@ const TotalTracks = styled.p`
 
 const Playlist: React.FC<{ playlistId: string }> = (props) => {
     const [playlist, setPlaylist] = React.useState<SpotifyApi.SinglePlaylistResponse | null>(null);
-    // const [tracks, setTracks] = React.useState(null);
+    const { setTracksList } = React.useContext(TrackContext);
+
     const [
         audioFeatures,
         setAudioFeatures,
@@ -92,6 +93,11 @@ const Playlist: React.FC<{ playlistId: string }> = (props) => {
             const audioFeatureRes = await getAudioFeaturesForTracks(playlist.tracks.items);
             setAudioFeatures(audioFeatureRes.data);
         }
+    };
+
+    const onTrackClick = () => {
+        const tracks = playlist?.tracks?.items.map((item) => item.track) ?? [];
+        setTracksList(tracks);
     };
 
     return (
@@ -138,7 +144,7 @@ const Playlist: React.FC<{ playlistId: string }> = (props) => {
                             <ul>
                                 {playlist.tracks &&
                                     playlist.tracks.items.map(({ track }, i) => (
-                                        <TrackItem track={track} key={i} />
+                                        <TrackItem track={track} key={i} onClick={onTrackClick} />
                                     ))}
                             </ul>
                         </Right>

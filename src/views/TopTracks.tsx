@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { getTopTracksLong, getTopTracksMedium, getTopTracksShort } from "../apiClient";
-import { catchErrors } from "../utils";
+import { catchErrors, TrackContext } from "../utils";
 import { Loader, TrackItem } from "./../components";
 
 import { Main, media, mixins, theme } from "../styles";
@@ -50,6 +50,7 @@ const TopTracks: React.FC = () => {
         null
     );
     const [activeRange, setActiveRange] = React.useState<"short" | "medium" | "long">("long");
+    const { setTracksList } = React.useContext(TrackContext);
 
     const apiCalls = {
         long: getTopTracksLong(),
@@ -79,6 +80,11 @@ const TopTracks: React.FC = () => {
         catchErrors(changeRange(range));
     };
 
+    const onTrackClick = () => {
+        const tracks = topTracks?.items ?? [];
+        setTracksList(tracks);
+    };
+
     return (
         <Main>
             <Header>
@@ -100,7 +106,9 @@ const TopTracks: React.FC = () => {
             </Header>
             <TracksContainer>
                 {topTracks ? (
-                    topTracks.items.map((track, i) => <TrackItem track={track} key={i} />)
+                    topTracks.items.map((track, i) => (
+                        <TrackItem track={track} key={i} onClick={onTrackClick} />
+                    ))
                 ) : (
                     <Loader />
                 )}
