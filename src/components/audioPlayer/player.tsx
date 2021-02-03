@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { media, mixins, theme } from "../../styles";
 import { TrackContext } from "./../../utils";
 import { IconPlayer } from "./../icons";
+import VolumeControl from "./volume";
 
 const { colors } = theme;
 
@@ -366,7 +367,7 @@ const Player = () => {
                                 <p>{trackInfo.artist}</p>
                             </CurrentInfo>
                         </MainCurrent>
-
+                        <VolumeControl />
                         <MainControl>
                             <TimelineButton>
                                 <span className="current-time">{formatTime(elapsed)}</span>

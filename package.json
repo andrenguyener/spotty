@@ -21,6 +21,7 @@
     "next-transpile-modules": "^4.1.0",
     "polished": "^4.0.5",
     "react": "16.14.0",
+    "react-compound-slider": "^3.3.1",
     "react-dom": "16.14.0",
     "react-use-audio-player": "^1.2.4",
     "siriwave": "^2.2.0",

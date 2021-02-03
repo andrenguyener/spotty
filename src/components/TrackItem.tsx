@@ -117,6 +117,7 @@ const TrackItem = ({
                     src: track.preview_url || undefined,
                     format: ["mp3"],
                     autoplay: true,
+                    volume: 0.5,
                 });
             }
         }

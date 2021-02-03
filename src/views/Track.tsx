@@ -155,6 +155,7 @@ const Track: React.FC<{ trackId: string }> = (props) => {
                 src: trackInfo.track.preview_url || undefined,
                 format: ["mp3"],
                 autoplay: true,
+                volume: 0.5,
             });
         }
     };
