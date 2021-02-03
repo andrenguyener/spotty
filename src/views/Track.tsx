@@ -129,7 +129,7 @@ const Track: React.FC<{ trackId: string }> = (props) => {
         audioAnalysis: null,
         audioFeatures: null,
     });
-    const { load } = useAudioPlayer();
+    const { load, volume } = useAudioPlayer();
     const { trackInfo: info, setTrackInfo: setInfo } = React.useContext(TrackContext);
 
     React.useEffect(() => {
@@ -155,10 +155,12 @@ const Track: React.FC<{ trackId: string }> = (props) => {
                 src: trackInfo.track.preview_url || undefined,
                 format: ["mp3"],
                 autoplay: true,
-                volume: 0.5,
+                volume: getVolume(),
             });
         }
     };
+
+    const getVolume = (): number => (typeof volume() === "number" ? (volume() as number) : 0.5);
 
     const isPlaying = () => {
         return !!(info.src && info?.src === trackInfo?.track?.preview_url);

@@ -357,6 +357,7 @@ const Player = () => {
                                 <Next />
                             </NextButton>
                         </PlayerControls>
+                        <VolumeControl />
                         <MainCurrent>
                             <CurrentKeyVisual imageUrl={trackInfo.artworkSrc || ""}>
                                 <img src={trackInfo.artworkSrc} alt="album-art" />
@@ -367,7 +368,6 @@ const Player = () => {
                                 <p>{trackInfo.artist}</p>
                             </CurrentInfo>
                         </MainCurrent>
-                        <VolumeControl />
                         <MainControl>
                             <TimelineButton>
                                 <span className="current-time">{formatTime(elapsed)}</span>

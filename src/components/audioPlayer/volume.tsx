@@ -140,11 +140,10 @@ const sliderStyle = {
 };
 
 const domain = [0, 10];
-const defaultValues = [5];
 
 const VolumeContainer = styled.div`
     position: relative;
-    margin-right: 20px;
+    margin: 0 20px;
 
     svg {
         &:hover {
@@ -155,7 +154,6 @@ const VolumeContainer = styled.div`
 
 const VolumeControl = () => {
     const { volume } = useAudioPlayer();
-    const [values, setValues] = React.useState<readonly number[]>(defaultValues.slice());
     const [displayVolume, setDisplayVolume] = React.useState(false);
 
     const onUpdate = (update: readonly number[]) => {
@@ -163,7 +161,6 @@ const VolumeControl = () => {
     };
 
     const onChange = (values: readonly number[]) => {
-        setValues(values);
         volume(1 - values[0] / 10);
     };
 
@@ -171,6 +168,8 @@ const VolumeControl = () => {
         e.preventDefault();
         setDisplayVolume(!displayVolume);
     };
+
+    const getVolume = (): number => (typeof volume() === "number" ? (volume() as number) : 0.5);
 
     return (
         <VolumeContainer>
@@ -193,7 +192,7 @@ const VolumeControl = () => {
                         rootStyle={sliderStyle}
                         onUpdate={onUpdate}
                         onChange={onChange}
-                        values={values}
+                        values={[10 - getVolume() * 10]}
                     >
                         <Rail>
                             {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}

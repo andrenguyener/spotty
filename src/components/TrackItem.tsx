@@ -97,7 +97,7 @@ const TrackItem = ({
 }: {
     track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }) => {
-    const { load, playing, togglePlayPause } = useAudioPlayer();
+    const { load, playing, togglePlayPause, volume } = useAudioPlayer();
     const { trackInfo, setTrackInfo } = React.useContext(TrackContext);
 
     const onImageClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -117,11 +117,13 @@ const TrackItem = ({
                     src: track.preview_url || undefined,
                     format: ["mp3"],
                     autoplay: true,
-                    volume: 0.5,
+                    volume: getVolume(),
                 });
             }
         }
     };
+
+    const getVolume = (): number => (typeof volume() === "number" ? (volume() as number) : 0.5);
 
     const isPlaying = () => {
         return !!(track.preview_url && trackInfo?.src === track?.preview_url && playing);
