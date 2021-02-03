@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -116,37 +117,39 @@ const Recommendations: React.FC<{ playlistId: string }> = (props) => {
     };
 
     return (
-        <Main>
-            {playlist && (
-                <PlaylistHeading>
-                    <h2>
-                        Recommended Tracks Based On{" "}
-                        <Link href={`/playlist/${playlist.id}`} passHref={true}>
-                            <PlaylistLink>{playlist.name}</PlaylistLink>
-                        </Link>
-                    </h2>
-                    {isFollowing && recPlaylistId ? (
-                        <OpenButton
-                            href={`https://open.spotify.com/playlist/${recPlaylistId}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Open in Spotify
-                        </OpenButton>
-                    ) : (
-                        <SaveButton onClick={catchErrors(createPlaylistClick)}>
-                            Save to Spotify
-                        </SaveButton>
-                    )}
-                </PlaylistHeading>
-            )}
-            <TracksContainer>
-                {recommendations &&
-                    recommendations.tracks.map((track, i) => (
-                        <TrackItem track={track} key={i} onClick={onTrackClick} />
-                    ))}
-            </TracksContainer>
-        </Main>
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <Main>
+                {playlist && (
+                    <PlaylistHeading>
+                        <h2>
+                            Recommended Tracks Based On{" "}
+                            <Link href={`/playlist/${playlist.id}`} passHref={true}>
+                                <PlaylistLink>{playlist.name}</PlaylistLink>
+                            </Link>
+                        </h2>
+                        {isFollowing && recPlaylistId ? (
+                            <OpenButton
+                                href={`https://open.spotify.com/playlist/${recPlaylistId}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open in Spotify
+                            </OpenButton>
+                        ) : (
+                            <SaveButton onClick={catchErrors(createPlaylistClick)}>
+                                Save to Spotify
+                            </SaveButton>
+                        )}
+                    </PlaylistHeading>
+                )}
+                <TracksContainer>
+                    {recommendations &&
+                        recommendations.tracks.map((track, i) => (
+                            <TrackItem track={track} key={i} onClick={onTrackClick} />
+                        ))}
+                </TracksContainer>
+            </Main>
+        </motion.div>
     );
 };
 

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 
@@ -32,18 +33,20 @@ const RecentlyPlayed = () => {
     };
 
     return (
-        <Main>
-            <h2>Recently Played Tracks</h2>
-            <TracksContainer>
-                {recentlyPlayed ? (
-                    recentlyPlayed.items.map(({ track }, i) => (
-                        <TrackItem track={track} key={i} onClick={onTrackClick} />
-                    ))
-                ) : (
-                    <Loader />
-                )}
-            </TracksContainer>
-        </Main>
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <Main>
+                <h2>Recently Played Tracks</h2>
+                <TracksContainer>
+                    {recentlyPlayed ? (
+                        recentlyPlayed.items.map(({ track }, i) => (
+                            <TrackItem track={track} key={i} onClick={onTrackClick} />
+                        ))
+                    ) : (
+                        <Loader />
+                    )}
+                </TracksContainer>
+            </Main>
+        </motion.div>
     );
 };
 

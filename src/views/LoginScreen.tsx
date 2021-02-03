@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { signIn } from "next-auth/client";
 import React from "react";
 import styled from "styled-components";
@@ -81,15 +82,17 @@ const LoginScreen = () => {
     };
 
     return (
-        <Login>
-            <h1>spotty</h1>
-            <LoginButton onClick={onLoginClick}>
-                <Logo>
-                    <IconSpotify />
-                </Logo>
-                Login with Spotify
-            </LoginButton>
-        </Login>
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <Login>
+                <h1>spotty</h1>
+                <LoginButton onClick={onLoginClick}>
+                    <Logo>
+                        <IconSpotify />
+                    </Logo>
+                    Login with Spotify
+                </LoginButton>
+            </Login>
+        </motion.div>
     );
 };
 

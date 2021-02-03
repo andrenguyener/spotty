@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -101,59 +102,65 @@ const Playlist: React.FC<{ playlistId: string }> = (props) => {
     };
 
     return (
-        <React.Fragment>
-            {playlist ? (
-                <Main>
-                    <PlaylistContainer>
-                        <Left>
-                            {playlist.images.length && (
-                                <PlaylistCover>
-                                    <img src={playlist.images[0].url} alt="Album Art" />
-                                </PlaylistCover>
-                            )}
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <React.Fragment>
+                {playlist ? (
+                    <Main>
+                        <PlaylistContainer>
+                            <Left>
+                                {playlist.images.length && (
+                                    <PlaylistCover>
+                                        <img src={playlist.images[0].url} alt="Album Art" />
+                                    </PlaylistCover>
+                                )}
 
-                            <a
-                                href={playlist.external_urls.spotify}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <Name>{playlist.name}</Name>
-                            </a>
+                                <a
+                                    href={playlist.external_urls.spotify}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <Name>{playlist.name}</Name>
+                                </a>
 
-                            <Owner>By {playlist.owner.display_name}</Owner>
+                                <Owner>By {playlist.owner.display_name}</Owner>
 
-                            {playlist.description && (
-                                // tslint:disable-next-line:react-no-dangerous-html
-                                <Description
-                                    dangerouslySetInnerHTML={{ __html: playlist.description }}
-                                />
-                            )}
+                                {playlist.description && (
+                                    // tslint:disable-next-line:react-no-dangerous-html
+                                    <Description
+                                        dangerouslySetInnerHTML={{ __html: playlist.description }}
+                                    />
+                                )}
 
-                            <TotalTracks>{playlist.tracks.total} Tracks</TotalTracks>
-                            <Link href={`/recommendations/${playlist.id}`} passHref={true}>
-                                <RecButton>Get Recommendations</RecButton>
-                            </Link>
-                            {audioFeatures && (
-                                <FeatureChart
-                                    features={audioFeatures.audio_features}
-                                    type="horizontalBar"
-                                />
-                            )}
-                        </Left>
-                        <Right>
-                            <ul>
-                                {playlist.tracks &&
-                                    playlist.tracks.items.map(({ track }, i) => (
-                                        <TrackItem track={track} key={i} onClick={onTrackClick} />
-                                    ))}
-                            </ul>
-                        </Right>
-                    </PlaylistContainer>
-                </Main>
-            ) : (
-                <Loader />
-            )}
-        </React.Fragment>
+                                <TotalTracks>{playlist.tracks.total} Tracks</TotalTracks>
+                                <Link href={`/recommendations/${playlist.id}`} passHref={true}>
+                                    <RecButton>Get Recommendations</RecButton>
+                                </Link>
+                                {audioFeatures && (
+                                    <FeatureChart
+                                        features={audioFeatures.audio_features}
+                                        type="horizontalBar"
+                                    />
+                                )}
+                            </Left>
+                            <Right>
+                                <ul>
+                                    {playlist.tracks &&
+                                        playlist.tracks.items.map(({ track }, i) => (
+                                            <TrackItem
+                                                track={track}
+                                                key={i}
+                                                onClick={onTrackClick}
+                                            />
+                                        ))}
+                                </ul>
+                            </Right>
+                        </PlaylistContainer>
+                    </Main>
+                ) : (
+                    <Loader />
+                )}
+            </React.Fragment>
+        </motion.div>
     );
 };
 

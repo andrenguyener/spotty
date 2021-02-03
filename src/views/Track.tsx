@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import { useAudioPlayer } from "react-use-audio-player";
 import styled from "styled-components";
@@ -173,121 +174,127 @@ const Track: React.FC<{ trackId: string }> = (props) => {
     const { track, audioAnalysis, audioFeatures } = trackInfo;
 
     return (
-        <React.Fragment>
-            {track ? (
-                <Main>
-                    <TrackContainer>
-                        <Artwork>
-                            <img src={track.album.images[0].url} alt="Album Artwork" />
-                        </Artwork>
-                        <Info>
-                            <Title>{track.name}</Title>
-                            <ArtistName>
-                                {track.artists &&
-                                    track.artists.map(({ name }, i) => (
-                                        <span key={i}>
-                                            {name}
-                                            {track.artists.length > 0 &&
-                                            i === track.artists.length - 1
-                                                ? ""
-                                                : ","}
-                                            &nbsp;
-                                        </span>
-                                    ))}
-                            </ArtistName>
-                            <Album>
-                                <a
-                                    href={track.album.external_urls.spotify}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {track.album.name}
-                                </a>{" "}
-                                &middot; {getYear(track.album.release_date)}
-                            </Album>
-                            <PlayTrackButton onClick={onPlayClick} isPlaying={isPlaying()}>
-                                {isPlaying() ? "Playing" : "Play"}
-                            </PlayTrackButton>
-                        </Info>
-                    </TrackContainer>
-
-                    {audioFeatures && audioAnalysis && (
-                        <>
-                            <AudioFeatures>
-                                <Features>
-                                    <Feature>
-                                        <FeatureText>
-                                            {formatDuration(audioFeatures.duration_ms)}
-                                        </FeatureText>
-                                        <FeatureLabel>Duration</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>
-                                            {parsePitchClass(audioFeatures.key)}
-                                        </FeatureText>
-                                        <FeatureLabel>Key</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>
-                                            {audioFeatures.mode === 1 ? "Major" : "Minor"}
-                                        </FeatureText>
-                                        <FeatureLabel>Modality</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>{audioFeatures.time_signature}</FeatureText>
-                                        <FeatureLabel>Time Signature</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>{Math.round(audioFeatures.tempo)}</FeatureText>
-                                        <FeatureLabel>Tempo (BPM)</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>{track.popularity}%</FeatureText>
-                                        <FeatureLabel>Popularity</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>
-                                            {(audioAnalysis as any)?.bars?.length}
-                                        </FeatureText>
-                                        <FeatureLabel>Bars</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>
-                                            {(audioAnalysis as any)?.beats?.length}
-                                        </FeatureText>
-                                        <FeatureLabel>Beats</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>
-                                            {(audioAnalysis as any)?.sections?.length}
-                                        </FeatureText>
-                                        <FeatureLabel>Sections</FeatureLabel>
-                                    </Feature>
-                                    <Feature>
-                                        <FeatureText>
-                                            {(audioAnalysis as any)?.segments?.length}
-                                        </FeatureText>
-                                        <FeatureLabel>Segments</FeatureLabel>
-                                    </Feature>
-                                </Features>
-                                <div>
-                                    <FeatureChart features={audioFeatures} type="" />
-                                    <DescriptionLink
-                                        href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/"
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <React.Fragment>
+                {track ? (
+                    <Main>
+                        <TrackContainer>
+                            <Artwork>
+                                <img src={track.album.images[0].url} alt="Album Artwork" />
+                            </Artwork>
+                            <Info>
+                                <Title>{track.name}</Title>
+                                <ArtistName>
+                                    {track.artists &&
+                                        track.artists.map(({ name }, i) => (
+                                            <span key={i}>
+                                                {name}
+                                                {track.artists.length > 0 &&
+                                                i === track.artists.length - 1
+                                                    ? ""
+                                                    : ","}
+                                                &nbsp;
+                                            </span>
+                                        ))}
+                                </ArtistName>
+                                <Album>
+                                    <a
+                                        href={track.album.external_urls.spotify}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        Full Description of Audio Features
-                                    </DescriptionLink>
-                                </div>
-                            </AudioFeatures>
-                        </>
-                    )}
-                </Main>
-            ) : (
-                <Loader />
-            )}
-        </React.Fragment>
+                                        {track.album.name}
+                                    </a>{" "}
+                                    &middot; {getYear(track.album.release_date)}
+                                </Album>
+                                <PlayTrackButton onClick={onPlayClick} isPlaying={isPlaying()}>
+                                    {isPlaying() ? "Playing" : "Play"}
+                                </PlayTrackButton>
+                            </Info>
+                        </TrackContainer>
+
+                        {audioFeatures && audioAnalysis && (
+                            <>
+                                <AudioFeatures>
+                                    <Features>
+                                        <Feature>
+                                            <FeatureText>
+                                                {formatDuration(audioFeatures.duration_ms)}
+                                            </FeatureText>
+                                            <FeatureLabel>Duration</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {parsePitchClass(audioFeatures.key)}
+                                            </FeatureText>
+                                            <FeatureLabel>Key</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {audioFeatures.mode === 1 ? "Major" : "Minor"}
+                                            </FeatureText>
+                                            <FeatureLabel>Modality</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {audioFeatures.time_signature}
+                                            </FeatureText>
+                                            <FeatureLabel>Time Signature</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {Math.round(audioFeatures.tempo)}
+                                            </FeatureText>
+                                            <FeatureLabel>Tempo (BPM)</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>{track.popularity}%</FeatureText>
+                                            <FeatureLabel>Popularity</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {(audioAnalysis as any)?.bars?.length}
+                                            </FeatureText>
+                                            <FeatureLabel>Bars</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {(audioAnalysis as any)?.beats?.length}
+                                            </FeatureText>
+                                            <FeatureLabel>Beats</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {(audioAnalysis as any)?.sections?.length}
+                                            </FeatureText>
+                                            <FeatureLabel>Sections</FeatureLabel>
+                                        </Feature>
+                                        <Feature>
+                                            <FeatureText>
+                                                {(audioAnalysis as any)?.segments?.length}
+                                            </FeatureText>
+                                            <FeatureLabel>Segments</FeatureLabel>
+                                        </Feature>
+                                    </Features>
+                                    <div>
+                                        <FeatureChart features={audioFeatures} type="" />
+                                        <DescriptionLink
+                                            href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Full Description of Audio Features
+                                        </DescriptionLink>
+                                    </div>
+                                </AudioFeatures>
+                            </>
+                        )}
+                    </Main>
+                ) : (
+                    <Loader />
+                )}
+            </React.Fragment>
+        </motion.div>
     );
 };
 

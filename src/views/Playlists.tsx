@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -114,43 +115,48 @@ const Playlists: React.FC = () => {
     };
 
     return (
-        <Main>
-            <h2>Your Playlists</h2>
-            <Wrapper>
-                <PlaylistsContainer>
-                    {playlists ? (
-                        playlists.items.map(({ id, images, name, tracks }, i) => (
-                            <Playlist key={i}>
-                                <Link href={`playlists/${id}`} passHref={true}>
-                                    <PlaylistCover>
-                                        {images.length ? (
-                                            <PlaylistImage src={images[0].url} alt="Album Art" />
-                                        ) : (
-                                            <PlaceholderArtwork>
-                                                <PlaceholderContent>
-                                                    <IconMusic />
-                                                </PlaceholderContent>
-                                            </PlaceholderArtwork>
-                                        )}
-                                        <PlaylistMask>
-                                            <i className="fas fa-info-circle" />
-                                        </PlaylistMask>
-                                    </PlaylistCover>
-                                </Link>
-                                <div>
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <Main>
+                <h2>Your Playlists</h2>
+                <Wrapper>
+                    <PlaylistsContainer>
+                        {playlists ? (
+                            playlists.items.map(({ id, images, name, tracks }, i) => (
+                                <Playlist key={i}>
                                     <Link href={`playlists/${id}`} passHref={true}>
-                                        <PlaylistName>{name}</PlaylistName>
+                                        <PlaylistCover>
+                                            {images.length ? (
+                                                <PlaylistImage
+                                                    src={images[0].url}
+                                                    alt="Album Art"
+                                                />
+                                            ) : (
+                                                <PlaceholderArtwork>
+                                                    <PlaceholderContent>
+                                                        <IconMusic />
+                                                    </PlaceholderContent>
+                                                </PlaceholderArtwork>
+                                            )}
+                                            <PlaylistMask>
+                                                <i className="fas fa-info-circle" />
+                                            </PlaylistMask>
+                                        </PlaylistCover>
                                     </Link>
-                                    <TotalTracks>{tracks.total} Tracks</TotalTracks>
-                                </div>
-                            </Playlist>
-                        ))
-                    ) : (
-                        <Loader />
-                    )}
-                </PlaylistsContainer>
-            </Wrapper>
-        </Main>
+                                    <div>
+                                        <Link href={`playlists/${id}`} passHref={true}>
+                                            <PlaylistName>{name}</PlaylistName>
+                                        </Link>
+                                        <TotalTracks>{tracks.total} Tracks</TotalTracks>
+                                    </div>
+                                </Playlist>
+                            ))
+                        ) : (
+                            <Loader />
+                        )}
+                    </PlaylistsContainer>
+                </Wrapper>
+            </Main>
+        </motion.div>
     );
 };
 

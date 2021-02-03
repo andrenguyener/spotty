@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import { Provider } from "next-auth/client";
 import GoogleFonts from "next-google-fonts";
 import { AppProps } from "next/app";
@@ -6,7 +7,7 @@ import Head from "next/head";
 import Structure from "./../layout/Structure";
 import { config } from "./../utils";
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps, router }: AppProps) => {
     const { session } = pageProps;
 
     return (
@@ -27,7 +28,9 @@ const App = ({ Component, pageProps }: AppProps) => {
                 }}
             >
                 <Structure>
-                    <Component {...pageProps} />
+                    <AnimatePresence exitBeforeEnter={true}>
+                        <Component {...pageProps} key={router.route} />
+                    </AnimatePresence>
                 </Structure>
             </Provider>
         </>

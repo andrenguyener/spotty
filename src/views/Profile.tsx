@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -170,6 +171,33 @@ const ArtistName = styled.div`
     }
 `;
 
+const easing = [0.6, -0.05, 0.01, 0.99];
+
+// Custom variant
+const fadeInUp = {
+    initial: {
+        y: 60,
+        opacity: 0,
+        transition: { duration: 0.6, ease: easing },
+    },
+    animate: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.6,
+            ease: easing,
+        },
+    },
+};
+
+const stagger = {
+    animate: {
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+};
+
 const User: React.FC = () => {
     const [state, setState] = React.useState<{
         user?: SpotifyApi.UserObjectPublic;
@@ -209,123 +237,140 @@ const User: React.FC = () => {
     };
 
     return (
-        <React.Fragment>
-            {user ? (
-                <Main>
-                    <Header>
-                        <Avatar>
-                            {(user?.images?.length ?? 0) > 0 ? (
-                                <img src={user?.images?.[0]?.url} alt="avatar" />
-                            ) : (
-                                <NoAvatar>
-                                    <IconUser />
-                                </NoAvatar>
-                            )}
-                        </Avatar>
-                        <SubHeader>
-                            <UserName
-                                href={user.external_urls.spotify}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <Name>{user.display_name}</Name>
-                            </UserName>
-                            <Stats>
-                                <Stat>
-                                    <NumberDiv>{user.followers?.total}</NumberDiv>
-                                    <NumLabel>Followers</NumLabel>
-                                </Stat>
-                                {followedArtists && (
-                                    <Stat>
-                                        <NumberDiv>
-                                            {followedArtists.artists.items.length}
-                                        </NumberDiv>
-                                        <NumLabel>Following</NumLabel>
-                                    </Stat>
-                                )}
-                                {totalPlaylists && (
-                                    <Stat>
-                                        <Link href="/playlists" passHref={true}>
-                                            <StyledA>
-                                                <NumberDiv>{totalPlaylists}</NumberDiv>
-                                                <NumLabel>Playlists</NumLabel>
-                                            </StyledA>
-                                        </Link>
-                                    </Stat>
-                                )}
-                            </Stats>
-                        </SubHeader>
-                    </Header>
-
-                    <Preview>
-                        <Tracklist>
-                            <TracklistHeading>
-                                <h3>Top Artists of All Time</h3>
-                                <MoreButton onClick={onMoreArtistsClick}>See More</MoreButton>
-                            </TracklistHeading>
-                            <div>
-                                {topArtists ? (
-                                    <ul>
-                                        {topArtists.items.slice(0, 10).map((artist, i) => (
-                                            <Artist key={i}>
-                                                <Link href={`/artist/${artist.id}`} passHref={true}>
-                                                    <StyledA>
-                                                        <ArtistArtwork>
-                                                            {artist.images.length && (
-                                                                <img
-                                                                    src={artist.images[2].url}
-                                                                    alt="Artist"
-                                                                />
-                                                            )}
-                                                            <Mask>
-                                                                <IconInfo />
-                                                            </Mask>
-                                                        </ArtistArtwork>
-                                                    </StyledA>
-                                                </Link>
-                                                <Link href={`/artist/${artist.id}`} passHref={true}>
-                                                    <StyledA>
-                                                        <ArtistName>
-                                                            <span>{artist.name}</span>
-                                                        </ArtistName>
-                                                    </StyledA>
-                                                </Link>
-                                            </Artist>
-                                        ))}
-                                    </ul>
+        <motion.div exit={{ opacity: 0 }} initial="initial" animate="animate">
+            <React.Fragment>
+                {user ? (
+                    <Main>
+                        <Header>
+                            <Avatar>
+                                {(user?.images?.length ?? 0) > 0 ? (
+                                    <img src={user?.images?.[0]?.url} alt="avatar" />
                                 ) : (
-                                    <Loader />
+                                    <NoAvatar>
+                                        <IconUser />
+                                    </NoAvatar>
                                 )}
-                            </div>
-                        </Tracklist>
+                            </Avatar>
+                            <SubHeader>
+                                <UserName
+                                    href={user.external_urls.spotify}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <Name>{user.display_name}</Name>
+                                </UserName>
+                                <Stats>
+                                    <Stat>
+                                        <NumberDiv>{user.followers?.total}</NumberDiv>
+                                        <NumLabel>Followers</NumLabel>
+                                    </Stat>
+                                    {followedArtists && (
+                                        <Stat>
+                                            <NumberDiv>
+                                                {followedArtists.artists.items.length}
+                                            </NumberDiv>
+                                            <NumLabel>Following</NumLabel>
+                                        </Stat>
+                                    )}
+                                    {totalPlaylists && (
+                                        <Stat>
+                                            <Link href="/playlists" passHref={true}>
+                                                <StyledA>
+                                                    <NumberDiv>{totalPlaylists}</NumberDiv>
+                                                    <NumLabel>Playlists</NumLabel>
+                                                </StyledA>
+                                            </Link>
+                                        </Stat>
+                                    )}
+                                </Stats>
+                            </SubHeader>
+                        </Header>
 
-                        <Tracklist>
-                            <TracklistHeading>
-                                <h3>Top Tracks of All Time</h3>
-                                <MoreButton onClick={onMoreTracksClick}>See More</MoreButton>
-                            </TracklistHeading>
-                            <ul>
-                                {topTracks ? (
-                                    topTracks.items
-                                        .slice(0, 10)
-                                        .map((track, i) => (
-                                            <TrackItem
-                                                track={track}
-                                                key={i}
-                                                onClick={onTrackClick}
-                                            />
-                                        ))
-                                ) : (
-                                    <Loader />
-                                )}
-                            </ul>
-                        </Tracklist>
-                    </Preview>
-                </Main>
-            ) : (
-                <Loader />
-            )}
-        </React.Fragment>
+                        <Preview>
+                            <Tracklist>
+                                <TracklistHeading>
+                                    <h3>Top Artists of All Time</h3>
+                                    <MoreButton onClick={onMoreArtistsClick}>See More</MoreButton>
+                                </TracklistHeading>
+                                <div>
+                                    <motion.div variants={stagger}>
+                                        {topArtists ? (
+                                            <ul>
+                                                {topArtists.items.slice(0, 10).map((artist, i) => (
+                                                    <motion.div variants={fadeInUp} key={i}>
+                                                        <Artist key={i}>
+                                                            <Link
+                                                                href={`/artist/${artist.id}`}
+                                                                passHref={true}
+                                                            >
+                                                                <StyledA>
+                                                                    <ArtistArtwork>
+                                                                        {artist.images.length && (
+                                                                            <img
+                                                                                src={
+                                                                                    artist.images[2]
+                                                                                        .url
+                                                                                }
+                                                                                alt="Artist"
+                                                                            />
+                                                                        )}
+                                                                        <Mask>
+                                                                            <IconInfo />
+                                                                        </Mask>
+                                                                    </ArtistArtwork>
+                                                                </StyledA>
+                                                            </Link>
+                                                            <Link
+                                                                href={`/artist/${artist.id}`}
+                                                                passHref={true}
+                                                            >
+                                                                <StyledA>
+                                                                    <ArtistName>
+                                                                        <span>{artist.name}</span>
+                                                                    </ArtistName>
+                                                                </StyledA>
+                                                            </Link>
+                                                        </Artist>
+                                                    </motion.div>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <Loader />
+                                        )}
+                                    </motion.div>
+                                </div>
+                            </Tracklist>
+
+                            <Tracklist>
+                                <TracklistHeading>
+                                    <h3>Top Tracks of All Time</h3>
+                                    <MoreButton onClick={onMoreTracksClick}>See More</MoreButton>
+                                </TracklistHeading>
+                                <ul>
+                                    <motion.div variants={stagger}>
+                                        {topTracks ? (
+                                            topTracks.items.slice(0, 10).map((track, i) => (
+                                                <motion.div variants={fadeInUp} key={i}>
+                                                    <TrackItem
+                                                        track={track}
+                                                        key={i}
+                                                        onClick={onTrackClick}
+                                                    />
+                                                </motion.div>
+                                            ))
+                                        ) : (
+                                            <Loader />
+                                        )}
+                                    </motion.div>
+                                </ul>
+                            </Tracklist>
+                        </Preview>
+                    </Main>
+                ) : (
+                    <Loader />
+                )}
+            </React.Fragment>
+        </motion.div>
     );
 };
 

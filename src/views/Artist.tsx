@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { rgba } from "polished";
 import React from "react";
 import styled from "styled-components";
@@ -136,58 +137,63 @@ const Artist: React.FC<{ artistId: string }> = (props) => {
     };
 
     return (
-        <React.Fragment>
-            {artist ? (
-                <Main>
-                    <ArtistContainer>
-                        <Left>
-                            <Artwork>
-                                <img src={artist.images[0].url} alt="Artist Artwork" />
-                            </Artwork>
-                            <div>
-                                <ArtistName>{artist.name}</ArtistName>
-                                <Stats>
-                                    <Stat>
-                                        <NumLabel>Followers</NumLabel>
-                                        <NumberDiv>
-                                            {formatWithCommas(artist.followers.total)}
-                                        </NumberDiv>
-                                    </Stat>
-                                    {artist.genres && (
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <React.Fragment>
+                {artist ? (
+                    <Main>
+                        <ArtistContainer>
+                            <Left>
+                                <Artwork>
+                                    <img src={artist.images[0].url} alt="Artist Artwork" />
+                                </Artwork>
+                                <div>
+                                    <ArtistName>{artist.name}</ArtistName>
+                                    <Stats>
                                         <Stat>
-                                            <NumLabel>Genres</NumLabel>
+                                            <NumLabel>Followers</NumLabel>
                                             <NumberDiv>
-                                                {artist.genres.map((genre) => (
-                                                    <Genre key={genre}>{genre}</Genre>
-                                                ))}
+                                                {formatWithCommas(artist.followers.total)}
                                             </NumberDiv>
                                         </Stat>
-                                    )}
-                                    {artist.popularity && (
-                                        <Stat>
-                                            <NumLabel>Popularity</NumLabel>
-                                            <NumberDiv>{artist.popularity}%</NumberDiv>
-                                        </Stat>
-                                    )}
-                                </Stats>
-                            </div>
-                            <FollowButton isFollowing={!!isFollowing} onClick={catchErrors(follow)}>
-                                {isFollowing ? "Following" : "Follow"}
-                            </FollowButton>
-                        </Left>
-                        <Right>
-                            <ul>
-                                {topTracks?.tracks?.map((track, i) => (
-                                    <TrackItem track={track} key={i} onClick={onTrackClick} />
-                                ))}
-                            </ul>
-                        </Right>
-                    </ArtistContainer>
-                </Main>
-            ) : (
-                <Loader />
-            )}
-        </React.Fragment>
+                                        {artist.genres && (
+                                            <Stat>
+                                                <NumLabel>Genres</NumLabel>
+                                                <NumberDiv>
+                                                    {artist.genres.map((genre) => (
+                                                        <Genre key={genre}>{genre}</Genre>
+                                                    ))}
+                                                </NumberDiv>
+                                            </Stat>
+                                        )}
+                                        {artist.popularity && (
+                                            <Stat>
+                                                <NumLabel>Popularity</NumLabel>
+                                                <NumberDiv>{artist.popularity}%</NumberDiv>
+                                            </Stat>
+                                        )}
+                                    </Stats>
+                                </div>
+                                <FollowButton
+                                    isFollowing={!!isFollowing}
+                                    onClick={catchErrors(follow)}
+                                >
+                                    {isFollowing ? "Following" : "Follow"}
+                                </FollowButton>
+                            </Left>
+                            <Right>
+                                <ul>
+                                    {topTracks?.tracks?.map((track, i) => (
+                                        <TrackItem track={track} key={i} onClick={onTrackClick} />
+                                    ))}
+                                </ul>
+                            </Right>
+                        </ArtistContainer>
+                    </Main>
+                ) : (
+                    <Loader />
+                )}
+            </React.Fragment>
+        </motion.div>
     );
 };
 

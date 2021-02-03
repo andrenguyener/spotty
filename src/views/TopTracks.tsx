@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 
@@ -86,34 +87,42 @@ const TopTracks: React.FC = () => {
     };
 
     return (
-        <Main>
-            <Header>
-                <h2>Top Tracks</h2>
-                <Ranges>
-                    <RangeButton isActive={activeRange === "long"} onClick={onRangeClick("long")}>
-                        <span>All Time</span>
-                    </RangeButton>
-                    <RangeButton
-                        isActive={activeRange === "medium"}
-                        onClick={onRangeClick("medium")}
-                    >
-                        <span>Last 6 Months</span>
-                    </RangeButton>
-                    <RangeButton isActive={activeRange === "short"} onClick={onRangeClick("short")}>
-                        <span>Last 4 Weeks</span>
-                    </RangeButton>
-                </Ranges>
-            </Header>
-            <TracksContainer>
-                {topTracks ? (
-                    topTracks.items.map((track, i) => (
-                        <TrackItem track={track} key={i} onClick={onTrackClick} />
-                    ))
-                ) : (
-                    <Loader />
-                )}
-            </TracksContainer>
-        </Main>
+        <motion.div exit={{ opacity: 0 }} initial="initial" animate="animate">
+            <Main>
+                <Header>
+                    <h2>Top Tracks</h2>
+                    <Ranges>
+                        <RangeButton
+                            isActive={activeRange === "long"}
+                            onClick={onRangeClick("long")}
+                        >
+                            <span>All Time</span>
+                        </RangeButton>
+                        <RangeButton
+                            isActive={activeRange === "medium"}
+                            onClick={onRangeClick("medium")}
+                        >
+                            <span>Last 6 Months</span>
+                        </RangeButton>
+                        <RangeButton
+                            isActive={activeRange === "short"}
+                            onClick={onRangeClick("short")}
+                        >
+                            <span>Last 4 Weeks</span>
+                        </RangeButton>
+                    </Ranges>
+                </Header>
+                <TracksContainer>
+                    {topTracks ? (
+                        topTracks.items.map((track, i) => (
+                            <TrackItem track={track} key={i} onClick={onTrackClick} />
+                        ))
+                    ) : (
+                        <Loader />
+                    )}
+                </TracksContainer>
+            </Main>
+        </motion.div>
     );
 };
 

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -159,50 +160,58 @@ const TopArtists: React.FC = () => {
     };
 
     return (
-        <Main>
-            <Header>
-                <h2>Top Artists</h2>
-                <Ranges>
-                    <RangeButton isActive={activeRange === "long"} onClick={onRangeClick("long")}>
-                        <span>All Time</span>
-                    </RangeButton>
-                    <RangeButton
-                        isActive={activeRange === "medium"}
-                        onClick={onRangeClick("medium")}
-                    >
-                        <span>Last 6 Months</span>
-                    </RangeButton>
-                    <RangeButton isActive={activeRange === "short"} onClick={onRangeClick("short")}>
-                        <span>Last 4 Weeks</span>
-                    </RangeButton>
-                </Ranges>
-            </Header>
-            <ArtistsContainer>
-                {topArtists ? (
-                    topArtists.items.map(({ id, external_urls, images, name }, i) => (
-                        <Artist key={i}>
-                            <Link href={`/artist/${id}`} passHref={true}>
-                                <ArtistArtwork>
-                                    {images.length && <img src={images[1].url} alt="Artist" />}
-                                    <Mask>
-                                        <IconInfo />
-                                    </Mask>
-                                </ArtistArtwork>
-                            </Link>
-                            <ArtistName
-                                href={external_urls.spotify}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {name}
-                            </ArtistName>
-                        </Artist>
-                    ))
-                ) : (
-                    <Loader />
-                )}
-            </ArtistsContainer>
-        </Main>
+        <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
+            <Main>
+                <Header>
+                    <h2>Top Artists</h2>
+                    <Ranges>
+                        <RangeButton
+                            isActive={activeRange === "long"}
+                            onClick={onRangeClick("long")}
+                        >
+                            <span>All Time</span>
+                        </RangeButton>
+                        <RangeButton
+                            isActive={activeRange === "medium"}
+                            onClick={onRangeClick("medium")}
+                        >
+                            <span>Last 6 Months</span>
+                        </RangeButton>
+                        <RangeButton
+                            isActive={activeRange === "short"}
+                            onClick={onRangeClick("short")}
+                        >
+                            <span>Last 4 Weeks</span>
+                        </RangeButton>
+                    </Ranges>
+                </Header>
+                <ArtistsContainer>
+                    {topArtists ? (
+                        topArtists.items.map(({ id, external_urls, images, name }, i) => (
+                            <Artist key={`${id}_${i}`}>
+                                <Link href={`/artist/${id}`} passHref={true}>
+                                    <ArtistArtwork>
+                                        {images.length && <img src={images[1].url} alt="Artist" />}
+                                        <Mask>
+                                            <IconInfo />
+                                        </Mask>
+                                    </ArtistArtwork>
+                                </Link>
+                                <ArtistName
+                                    href={external_urls.spotify}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {name}
+                                </ArtistName>
+                            </Artist>
+                        ))
+                    ) : (
+                        <Loader />
+                    )}
+                </ArtistsContainer>
+            </Main>
+        </motion.div>
     );
 };
 
