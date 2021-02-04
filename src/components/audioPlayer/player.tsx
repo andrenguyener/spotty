@@ -138,7 +138,7 @@ const PlayerControls = styled.div`
     ${media.tablet`
         order: 3;
         justify-content: flex-end;
-        padding-right: 15px;
+        padding-right: 35px;
     `};
 `;
 
@@ -174,6 +174,10 @@ const PreviousButton = styled(ControlButton)<{ disabled: boolean }>`
     }
 
     pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+
+    ${media.tablet`
+      display: none;
+    `};
 `;
 
 const PauseButton = styled(ControlButton)`
@@ -208,6 +212,10 @@ const NextButton = styled(ControlButton)<{ disabled: boolean }>`
     }
 
     pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+
+    ${media.tablet`
+      display: none;
+    `};
 `;
 
 const TimelineButton = styled(ControlButton)`
