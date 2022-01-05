@@ -3,6 +3,12 @@
 > A web app for visualizing personalized Spotify data.
 > View your top artists, top tracks, recently played tracks, detailed audio information about each track, and an audio visualizer.
 
+<p align="center">
+  <a href="https://app.netlify.com/sites/spotty-profile/deploys" target="_blank">
+    <img src="https://api.netlify.com/api/v1/badges/2eafa093-0682-4320-acf7-696cd1ee4860/deploy-status" alt="Netlify Status" />
+  </a>
+</p>
+
 ![mockup1](./public/images/mockup2.png)
 ![mockup2](./public/images/mockup1.png)
 
